@@ -1,0 +1,21 @@
+{
+    "name": "onemoreangle/php-marshaller",
+    "description": "Efficiently serialize and deserialize PHP data structures with this adaptable library, supporting multiple formats and optional attribute or annotation-based property naming.",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "OneMoreAngle\\Marshaller\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "onemoreangle",
+            "email": "rgarridodomenech@outlook.com"
+        }
+    ],
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^7.4 || ^8.0"
+    }
+}
