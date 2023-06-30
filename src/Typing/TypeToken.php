@@ -2,8 +2,14 @@
 
 namespace OneMoreAngle\Marshaller\Typing;
 
-class TypeToken {
+use OneMoreAngle\Marshaller\Deserialization\Deserializer;
+use OneMoreAngle\Marshaller\Deserialization\DeserializerFactory;
+use OneMoreAngle\Marshaller\Serialization\Serializer;
+use OneMoreAngle\Marshaller\Serialization\SerializerFactory;
 
+abstract class TypeToken {
+
+    const NULL = "null";
     const ARRAY = "array";
     const BOOL = "boolean";
     const INT = "integer";
@@ -11,7 +17,8 @@ class TypeToken {
     const STRING = "string";
     const OBJECT = "object";
 
-    static $TYPES = [
+    protected static $TYPES = [
+        self::NULL,
         self::ARRAY,
         self::BOOL,
         self::INT,
@@ -20,13 +27,13 @@ class TypeToken {
         self::OBJECT
     ];
 
-    private string $type;
+    protected string $type;
 
     protected function __construct($type) {
         $this->type = $type;
     }
 
-    public function getType(): string {
-        return $this->type;
-    }
+    abstract public function getSerializer(SerializerFactory $factory): Serializer;
+
+    abstract public function getDeserializer(DeserializerFactory $factory): Deserializer;
 }
