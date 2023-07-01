@@ -4,8 +4,8 @@ namespace OneMoreAngle\Marshaller\Typing;
 
 use OneMoreAngle\Marshaller\Deserialization\Deserializer;
 use OneMoreAngle\Marshaller\Deserialization\DeserializerFactory;
+use OneMoreAngle\Marshaller\Serialization\SerializationManager;
 use OneMoreAngle\Marshaller\Serialization\Serializer;
-use OneMoreAngle\Marshaller\Serialization\SerializerFactory;
 
 abstract class TypeToken {
 
@@ -17,7 +17,7 @@ abstract class TypeToken {
     const STRING = "string";
     const OBJECT = "object";
 
-    protected static $TYPES = [
+    protected static $types = [
         self::NULL,
         self::ARRAY,
         self::BOOL,
@@ -33,7 +33,14 @@ abstract class TypeToken {
         $this->type = $type;
     }
 
-    abstract public function getSerializer(SerializerFactory $factory): Serializer;
+    abstract public function getSerializer(SerializationManager $factory): Serializer;
 
     abstract public function getDeserializer(DeserializerFactory $factory): Deserializer;
+
+    /**
+     * This gets a unique key for this type token. This is used to cache serializers
+     * and deserializers as they are always the same for a given type token.
+     * @return string
+     */
+    public abstract function key(): string;
 }

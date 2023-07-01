@@ -3,42 +3,33 @@
 namespace OneMoreAngle\Marshaller\Serialization;
 
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
-use OneMoreAngle\Marshaller\Meta\PropertyMetadataProvider;
 use ReflectionClass;
-use SplObjectStorage;
+use ReflectionException;
 
 class ObjectSerializer implements Serializer {
-    protected PropertyMetadataProvider $propertyMetadataProvider;
-    protected SerializerFactory $serializerFactory;
+    protected Marshaller $marshaller;
     protected string $class;
-    protected SplObjectStorage $objectStack;
 
-    public function __construct(PropertyMetadataProvider $propertyMetadataProvider, SerializerFactory $serializerFactory, string $class) {
-        $this->propertyMetadataProvider = $propertyMetadataProvider;
-        $this->serializerFactory = $serializerFactory;
+    public function __construct(Marshaller $marshaller, string $class) {
+        $this->marshaller = $marshaller;
         $this->class = $class;
-        $this->objectStack = new SplObjectStorage();
     }
 
+    /**
+     * @throws ReflectionException
+     * @throws CircularReferenceException
+     */
     public function serialize($data) {
-        if ($this->objectStack->contains($data)) {
-            throw new CircularReferenceException();
-        }
-
-        $this->objectStack->attach($data);
         $reflection = new ReflectionClass($this->class);
         $result = [];
 
         foreach ($reflection->getProperties() as $property) {
             $property->setAccessible(true);
             $value = $property->getValue($data);
-            $propertyName = $this->propertyMetadataProvider->getSerializationName($property);
-            $typeToken = $this->propertyMetadataProvider->getTargetType($property);
-            $serializer = $this->serializerFactory->create($typeToken);
-            $result[$propertyName] = $serializer->serialize($value);
+            $propertyName = $property->getName();
+            // use a stage process to get metadata
+            $result[$propertyName] = $this->marshaller->marshall($value);
         }
-
-        $this->objectStack->detach($data);
         return $result;
     }
 }

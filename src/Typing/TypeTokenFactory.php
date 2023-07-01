@@ -6,31 +6,31 @@ use OneMoreAngle\Marshaller\Exception\UnsupportedValueException;
 
 class TypeTokenFactory {
     public static function int() : PrimitiveTypeToken {
-        return new PrimitiveTypeToken(TypeToken::INT);
+        return PrimitiveTypeToken::create(TypeToken::INT);
     }
 
     public static function string() : PrimitiveTypeToken {
-        return new PrimitiveTypeToken(TypeToken::STRING);
+        return PrimitiveTypeToken::create(TypeToken::STRING);
     }
 
     public static function bool() : PrimitiveTypeToken {
-        return new PrimitiveTypeToken(TypeToken::BOOL);
+        return PrimitiveTypeToken::create(TypeToken::BOOL);
     }
 
     public static function float() : PrimitiveTypeToken {
-        return new PrimitiveTypeToken(TypeToken::FLOAT);
+        return PrimitiveTypeToken::create(TypeToken::FLOAT);
     }
 
     public static function object(string $class) : ClassTypeToken {
-        return new ClassTypeToken($class);
+        return ClassTypeToken::create($class);
     }
 
     public static function array() : ArrayTypeToken {
-        return new ArrayTypeToken();
+        return ArrayTypeToken::create();
     }
 
     public static function null() : PrimitiveTypeToken {
-        return new PrimitiveTypeToken(TypeToken::NULL);
+        return PrimitiveTypeToken::create(TypeToken::NULL);
     }
 
     public static function tokenize($value) : TypeToken {

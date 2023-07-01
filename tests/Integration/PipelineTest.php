@@ -1,10 +1,13 @@
 <?php
+namespace OneMoreAngle\Marshaller\Test\Integration;
+
 use OneMoreAngle\Marshaller\Pipeline\Data;
 use OneMoreAngle\Marshaller\Pipeline\PipelineBuilder;
 use OneMoreAngle\Marshaller\Pipeline\Stage;
+
 use PHPUnit\Framework\TestCase;
 
-class PipelineTest extends  TestCase {
+class PipelineTest extends TestCase {
     public function testPipeline() {
         $addStage = new class(2) implements Stage {
             private int $amount;

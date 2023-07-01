@@ -11,20 +11,15 @@ use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 use ReflectionProperty;
 
 class PhpAttributeReader implements PropertyMetadataProvider {
-    public function __construct() {
-        if (version_compare(PHP_VERSION, '8.0.0', '>=')) {
-            throw new Exception('PHP 8.0.0 or higher is required');
-        }
-    }
 
     public function getSerializationName(ReflectionProperty $property): ?string {
-        $attributes = $property->getAttributes(Name::class);
-        return $attributes ? $attributes[0]->newInstance()->name : $property->getName();
+        $annotation = static::getAttributeForClass($property, Name::class);
+        return $annotation ? $annotation->name : null;
     }
 
     public function getSerializationAliases(ReflectionProperty $property): array {
-        $attributes = $property->getAttributes(Aliases::class);
-        return $attributes ? $attributes[0]->newInstance()->aliases : [];
+        $annotation = static::getAttributeForClass($property, Aliases::class);
+        return $annotation ? $annotation->names : [];
     }
 
     public function getTargetType(ReflectionProperty $property): ?TypeToken {
@@ -37,14 +32,18 @@ class PhpAttributeReader implements PropertyMetadataProvider {
         return $annotation ? $annotation->omitEmpty : null;
     }
 
-
     /**
      * @template T
      * @param ReflectionProperty $property
      * @param class-string<T> $attributeClass
      * @return T|null
+     * @throws Exception
      */
     protected static function getAttributeForClass(ReflectionProperty $property, string $attributeClass) {
+        if (!version_compare(PHP_VERSION, '8.0.0', '>=')) {
+            throw new Exception('PHP 8.0.0 or higher is required to use PhpAttributeReader');
+        }
+
         $attributes = $property->getAttributes($attributeClass);
         return $attributes ? $attributes[0]->newInstance() : null;
     }

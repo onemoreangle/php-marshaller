@@ -1,7 +1,6 @@
 <?php
 namespace OneMoreAngle\Marshaller\Meta;
 
-use OneMoreAngle\Marshaller\Typing\TargetType;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 use ReflectionProperty;
 
