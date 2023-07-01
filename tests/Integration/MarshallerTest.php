@@ -16,14 +16,10 @@ class MarshallerTest extends TestCase {
         $foo->bar = new Bar();
         $foo->bar->foo = $foo;
 
-        $circular = false;
-        try {
-            $serializationManager = new SerializationManager();
-            $serializer = $serializationManager->create(TypeTokenFactory::tokenize($foo));
-            $serializer->serialize($foo);
-        } catch (CircularReferenceException $e) {
-            $circular = true;
-        }
-        $this->assertTrue($circular, "Circular reference was not detected");
+        $this->expectException(CircularReferenceException::class);
+
+        $serializationManager = new SerializationManager();
+        $serializer = $serializationManager->create(TypeTokenFactory::tokenize($foo));
+        $serializer->serialize($foo);
     }
 }
