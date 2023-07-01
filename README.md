@@ -1,4 +1,6 @@
 # php-marshaller
+![tests](https://github.com/onemoreangle/php-marshaller/actions/workflows/ci.yml/badge.svg)
+
 This is a small library to serialize and deserialize PHP data structures, currently in a very, very, early stage of development and not suitable for use.
 
 ## Initial features
