@@ -7,9 +7,12 @@ namespace OneMoreAngle\Marshaller\Annotation;
  * @Target("PROPERTY")
  */
 class OmitEmpty {
-    private bool $omit;
+    public ?bool $omit;
 
+    /**
+     * @param array{'value': ?bool, 'omit': ?bool} $values
+     */
     public function __construct(array $values) {
-        $this->omit = $values['value'] ?? $values['omit'];
+        $this->omit = $values['value'] ?? $values['omit'] ?? null;
     }
 }

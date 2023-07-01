@@ -26,6 +26,6 @@ class SerializerFactory {
     }
 
     public function createArraySerializer(ArrayTypeToken $elementType) : Serializer {
-        return new ArraySerializer($this, $elementType);
+        return new ArraySerializer();
     }
 }

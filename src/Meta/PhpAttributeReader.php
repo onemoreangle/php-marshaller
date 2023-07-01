@@ -4,8 +4,10 @@ namespace OneMoreAngle\Marshaller\Meta;
 use Exception;
 use OneMoreAngle\Marshaller\Attribute\Aliases;
 use OneMoreAngle\Marshaller\Attribute\Name;
-use OneMoreAngle\Marshaller\Typing\TargetType;
+use OneMoreAngle\Marshaller\Attribute\OmitEmpty;
+use OneMoreAngle\Marshaller\Attribute\TargetType;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
+use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 use ReflectionProperty;
 
 class PhpAttributeReader implements PropertyMetadataProvider {
@@ -14,7 +16,6 @@ class PhpAttributeReader implements PropertyMetadataProvider {
             throw new Exception('PHP 8.0.0 or higher is required');
         }
     }
-
 
     public function getSerializationName(ReflectionProperty $property): ?string {
         $attributes = $property->getAttributes(Name::class);
@@ -27,12 +28,24 @@ class PhpAttributeReader implements PropertyMetadataProvider {
     }
 
     public function getTargetType(ReflectionProperty $property): ?TypeToken {
-        $attributes = $property->getAttributes(TargetType::class);
-        $rawType = $attributes && $attributes[0]->newInstance()->type;
-        return $rawType ? new TypeTok : null;
+        $annotation = static::getAttributeForClass($property, TargetType::class);
+        return $annotation ? TypeTokenFactory::fromNamedType($property->getType()->getName()) : null;
     }
 
     public function isOmitEmpty(ReflectionProperty $property): ?bool {
-        // TODO: Implement isOmitEmpty() method.
+        $annotation = static::getAttributeForClass($property, OmitEmpty::class);
+        return $annotation ? $annotation->omitEmpty : null;
+    }
+
+
+    /**
+     * @template T
+     * @param ReflectionProperty $property
+     * @param class-string<T> $attributeClass
+     * @return T|null
+     */
+    protected static function getAttributeForClass(ReflectionProperty $property, string $attributeClass) {
+        $attributes = $property->getAttributes($attributeClass);
+        return $attributes ? $attributes[0]->newInstance() : null;
     }
 }

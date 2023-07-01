@@ -7,9 +7,12 @@ namespace OneMoreAngle\Marshaller\Annotation;
  * @Target("PROPERTY")
  */
 class TargetClass {
-    public array $class;
+    public ?string $class;
 
+    /**
+     * @param array{'value': ?string, 'class': ?string} $values
+     */
     public function __construct(array $values) {
-        $this->class = $values['value'] ?? $values['class'];
+        $this->class = $values['value'] ?? $values['class'] ?? null;
     }
 }

@@ -35,6 +35,15 @@ class TypeTokenFactory {
 
     public static function tokenize($value) : TypeToken {
         $type = gettype($value);
+
+        if($type === 'object') {
+            return self::object(get_class($value));
+        }
+
+        return self::fromType($type);
+    }
+
+    public static function fromType(string $type) : TypeToken {
         $map = [
             'integer' => fn () => self::int(),
             'string' => fn () => self::string(),
@@ -42,7 +51,6 @@ class TypeTokenFactory {
             'double' => fn () => self::float(),
             'NULL' => fn () => self::null(),
             'array' => fn () => self::array(),
-            'object' => fn () => self::object(get_class($value))
         ];
 
         if (!array_key_exists($type, $map)) {
@@ -50,5 +58,25 @@ class TypeTokenFactory {
         }
 
         return $map[$type]();
+    }
+
+    public static function fromNamedType(string $type) : TypeToken {
+        $map = [
+            'int' => fn () => self::int(),
+            'string' => fn () => self::string(),
+            'bool' => fn () => self::bool(),
+            'float' => fn () => self::float(),
+            'array' => fn () => self::array(),
+        ];
+
+        if (array_key_exists($type, $map)) {
+            return $map[$type]();
+        }
+
+        if (class_exists($type)) {
+            return self::object($type);
+        }
+
+        throw new UnsupportedValueException("Unsupported type: $type");
     }
 }
