@@ -49,6 +49,7 @@ class TypeTokenFactory {
             'string' => fn () => self::string(),
             'boolean' => fn () => self::bool(),
             'float' => fn () => self::float(),
+            'double' => fn () => self::float(),
             'NULL' => fn () => self::null(),
             'array' => fn () => self::array(),
         ];
