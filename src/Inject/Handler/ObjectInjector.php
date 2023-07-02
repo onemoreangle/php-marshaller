@@ -2,7 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Inject\Handler;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Inject\InjectorManager;
 use OneMoreAngle\Marshaller\Inject\Injector;
 use OneMoreAngle\Marshaller\Meta\PropertyMetadataProvider;
@@ -27,23 +27,24 @@ class ObjectInjector implements Injector {
     }
 
     /**
-     * @param Serializable $data
+     * @param IntermediaryData $data
      * @param TypeToken $token
      * @return R the deserialized data which is an instance of the class passed in the constructor
      * @throws ReflectionException
      */
-    public function reconstruct(Serializable $data, TypeToken $token) {
+    public function reconstruct(IntermediaryData $data, TypeToken $token) {
         // TODO: more robust class instantiation
         $class = $token->key();
         $object = new $class();
         $reflection = new ReflectionClass($object);
 
         foreach ($data as $propertyName => $propertyValue) {
+            // TODO: get property name where alias or name is equal to $propertyName
             $reflectionProperty = $reflection->getProperty($propertyName);
             $reflectionProperty->setAccessible(true);
             $typeToken = $this->propertyMetadataProvider->getTargetType($reflectionProperty);
             $deserializer = $this->injectorManager->create($typeToken);
-            $reflectionProperty->setValue($object, $deserializer->reconstruct($propertyValue));
+            $reflectionProperty->setValue($object, $deserializer->reconstruct($propertyValue, $typeToken));
         }
 
         return $object;

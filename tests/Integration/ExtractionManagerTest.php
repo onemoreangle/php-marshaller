@@ -21,6 +21,7 @@ class ExtractionManagerTest extends TestCase {
         $extractor = new ExtractionManager();
         $extractor->extract($foo);
     }
+
     public function testCircularReferenceInArray() {
         $foo = new Foo();
         $foo->bar = new Bar();

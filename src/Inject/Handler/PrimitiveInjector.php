@@ -2,7 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Inject\Handler;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Inject\Injector;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
@@ -12,7 +12,7 @@ use OneMoreAngle\Marshaller\Typing\TypeToken;
  * @template-extends Injector<T, R>
  */
 class PrimitiveInjector implements Injector {
-    public function reconstruct(Serializable $data, TypeToken $token) {
+    public function reconstruct(IntermediaryData $data, TypeToken $token) {
         return $data;
     }
 }

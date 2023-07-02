@@ -2,7 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Inject;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Inject\Handler\ArrayInjector;
 use OneMoreAngle\Marshaller\Inject\Handler\ObjectInjector;
 use OneMoreAngle\Marshaller\Inject\Handler\PrimitiveInjector;
@@ -38,7 +38,7 @@ class InjectorManager implements InjectorProcess {
         return $this->arrayInjector;
     }
 
-    public function reconstruct(Serializable $data, TypeToken $token) {
+    public function reconstruct(IntermediaryData $data, TypeToken $token) {
         return $this->create($token)->reconstruct($data, $token);
     }
 }

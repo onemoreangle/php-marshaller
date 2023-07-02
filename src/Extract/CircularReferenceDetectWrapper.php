@@ -2,7 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Extract;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use SplObjectStorage;
 
@@ -27,7 +27,7 @@ class CircularReferenceDetectWrapper {
     /**
      * @throws CircularReferenceException
      */
-    public function execute(object $data, callable $fn) : Serializable {
+    public function execute(object $data, callable $fn) : IntermediaryData {
         if ($this->objectStack->contains($data)) {
             throw new CircularReferenceException();
         }

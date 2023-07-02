@@ -18,7 +18,6 @@ class Pipeline implements Stage {
         $this->stages = $stages;
     }
 
-
     /**
      * @param Data<In> $input
      * @return Data<Out>

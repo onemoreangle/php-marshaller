@@ -2,13 +2,16 @@
 
 namespace OneMoreAngle\Marshaller\Extract\Handler;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Extract\CircularReferenceDetectWrapper;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
 use OneMoreAngle\Marshaller\Extract\Extractor;
+use OneMoreAngle\Marshaller\Typing\TypeToken;
+use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 use ReflectionClass;
 use SplObjectStorage;
+use stdClass;
 
 class ObjectExtractor implements Extractor {
     protected ExtractionManager $marshaller;
@@ -20,23 +23,33 @@ class ObjectExtractor implements Extractor {
     }
 
     /**
+     * @param $data
+     * @param TypeToken $token
+     * @return IntermediaryData
      * @throws CircularReferenceException
      */
-    public function extract($data): Serializable {
-        return $this->circularRefCheck->execute($data, fn() => $this->extractData($data));
+    public function extract($data, TypeToken $token): IntermediaryData {
+        return $this->circularRefCheck->execute($data, fn() => $this->extractData($data, $token));
     }
 
-    public function extractData(object $data): Serializable {
-        $reflection = new ReflectionClass($data);
-        $result = new Serializable();
+    public function extractData(object $data, TypeToken $token): IntermediaryData {
+        if($data instanceof stdClass) {
+            // We take on the responsibility of extracting stdClass by creating an array from it and delegating
+            // it to the array extractor; there is nothing contextually meaningful to extract from stdClass
+            return $this->marshaller->getArrayExtractor()->extract((array) $data, TypeTokenFactory::array());
+        }
 
+        $reflection = new ReflectionClass($data);
+
+        $result = [];
         foreach ($reflection->getProperties() as $property) {
+            // TODO: use stage to extract metadata from property to influence the process
             $property->setAccessible(true);
             $value = $property->getValue($data);
             $propertyName = $property->getName();
-            // use a stage process to get metadata
             $result[$propertyName] = $this->marshaller->extract($value);
         }
-        return $result;
+
+        return new IntermediaryData($result, $token);
     }
 }

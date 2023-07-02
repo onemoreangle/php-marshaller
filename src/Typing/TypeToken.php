@@ -2,11 +2,11 @@
 
 namespace OneMoreAngle\Marshaller\Typing;
 
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Extract\Extractor;
 use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
 use OneMoreAngle\Marshaller\Inject\Injector;
 use OneMoreAngle\Marshaller\Inject\InjectorProcess;
-use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
 
 abstract class TypeToken {
 
@@ -37,6 +37,8 @@ abstract class TypeToken {
     abstract public function getExtractor(ExtractorProcess $visitable): Extractor;
 
     abstract public function getInjector(InjectorProcess $visitable): Injector;
+
+    abstract public function visit(TypeVisitor $visitable, IntermediaryData $data);
 
     /**
      * This gets a unique key for this type token. This is used to cache serializers

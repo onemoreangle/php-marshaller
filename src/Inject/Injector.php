@@ -2,7 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Inject;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
 /**
@@ -12,9 +12,9 @@ use OneMoreAngle\Marshaller\Typing\TypeToken;
 interface Injector {
 
     /**
-     * @param Serializable $data
+     * @param IntermediaryData $data
      * @param TypeToken $token
      * @return R the deserialized data
      */
-    public function reconstruct(Serializable $data, TypeToken $token);
+    public function reconstruct(IntermediaryData $data, TypeToken $token);
 }

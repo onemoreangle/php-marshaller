@@ -2,6 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Typing;
 
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Extract\Extractor;
 use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
 use OneMoreAngle\Marshaller\Inject\Injector;
@@ -29,6 +30,10 @@ class ArrayTypeToken extends TypeToken {
 
     public function getInjector(InjectorProcess $visitable): Injector {
         return $visitable->getArrayInjector();
+    }
+
+    public function visit(TypeVisitor $visitable, IntermediaryData $data) {
+        $visitable->visitArray($data);
     }
 
     public function key(): string {

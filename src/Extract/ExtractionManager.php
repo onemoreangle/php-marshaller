@@ -2,7 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Extract;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Extract\Handler\ArrayExtractor;
 use OneMoreAngle\Marshaller\Extract\Handler\ObjectExtractor;
@@ -23,10 +23,10 @@ class ExtractionManager implements ExtractorProcess {
     /**
      * @throws CircularReferenceException
      */
-    public function extract($data) : Serializable {
+    public function extract($data) : IntermediaryData {
         $typeToken = TypeTokenFactory::tokenize($data);
         $serializer = $typeToken->getExtractor($this);
-        return $serializer->extract($data);
+        return $serializer->extract($data, $typeToken);
     }
 
 

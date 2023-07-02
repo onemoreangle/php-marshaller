@@ -2,7 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Extract;
 
-interface ExtractorProcess extends Extractor {
+interface ExtractorProcess {
     public function getPrimitiveExtractor() : Extractor;
 
     public function getObjectExtractor() : Extractor;

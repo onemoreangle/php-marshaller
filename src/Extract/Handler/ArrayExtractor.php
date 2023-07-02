@@ -2,9 +2,10 @@
 
 namespace OneMoreAngle\Marshaller\Extract\Handler;
 
-use OneMoreAngle\Marshaller\Data\Serializable;
+use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
 use OneMoreAngle\Marshaller\Extract\Extractor;
+use OneMoreAngle\Marshaller\Typing\TypeToken;
 
 class ArrayExtractor implements Extractor {
 
@@ -14,13 +15,13 @@ class ArrayExtractor implements Extractor {
         $this->extractor = $extractor;
     }
 
-    public function extract($data): Serializable {
-        $result = new Serializable();
+    public function extract($data, TypeToken $token): IntermediaryData {
+        $result = [];
 
         foreach ($data as $key => $value) {
             $result[$key] = $this->extractor->extract($value);
         }
 
-        return $result;
+        return new IntermediaryData($result, $token);
     }
 }
