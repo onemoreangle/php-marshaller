@@ -2,11 +2,10 @@
 
 namespace OneMoreAngle\Marshaller\Typing;
 
-use OneMoreAngle\Marshaller\Deserialization\Deserializer;
-use OneMoreAngle\Marshaller\Deserialization\DeserializerFactory;
-use OneMoreAngle\Marshaller\Serialization\SerializationManager;
-use OneMoreAngle\Marshaller\Serialization\Serializer;
-use OneMoreAngle\Marshaller\Serialization\Marshaller;
+use OneMoreAngle\Marshaller\Extract\Extractor;
+use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
+use OneMoreAngle\Marshaller\Inject\Injector;
+use OneMoreAngle\Marshaller\Inject\InjectorProcess;
 
 class ClassTypeToken extends TypeToken {
 
@@ -31,12 +30,12 @@ class ClassTypeToken extends TypeToken {
         return $this->class;
     }
 
-    public function getSerializer(SerializationManager $factory): Serializer {
-        return $factory->getClassSerializer($this->class);
+    public function getExtractor(ExtractorProcess $visitable): Extractor {
+        return $visitable->getObjectExtractor();
     }
 
-    public function getDeserializer(DeserializerFactory $factory): Deserializer {
-        return $factory->createClassDeserializer($this->class);
+    public function getInjector(InjectorProcess $visitable): Injector {
+        return $visitable->getObjectInjector();
     }
 
     public function key(): string {

@@ -2,10 +2,11 @@
 
 namespace OneMoreAngle\Marshaller\Typing;
 
-use OneMoreAngle\Marshaller\Deserialization\Deserializer;
-use OneMoreAngle\Marshaller\Deserialization\DeserializerFactory;
-use OneMoreAngle\Marshaller\Serialization\SerializationManager;
-use OneMoreAngle\Marshaller\Serialization\Serializer;
+use OneMoreAngle\Marshaller\Extract\Extractor;
+use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
+use OneMoreAngle\Marshaller\Inject\Injector;
+use OneMoreAngle\Marshaller\Inject\InjectorProcess;
+use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
 
 abstract class TypeToken {
 
@@ -33,9 +34,9 @@ abstract class TypeToken {
         $this->type = $type;
     }
 
-    abstract public function getSerializer(SerializationManager $factory): Serializer;
+    abstract public function getExtractor(ExtractorProcess $visitable): Extractor;
 
-    abstract public function getDeserializer(DeserializerFactory $factory): Deserializer;
+    abstract public function getInjector(InjectorProcess $visitable): Injector;
 
     /**
      * This gets a unique key for this type token. This is used to cache serializers

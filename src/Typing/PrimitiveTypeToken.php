@@ -2,10 +2,10 @@
 
 namespace OneMoreAngle\Marshaller\Typing;
 
-use OneMoreAngle\Marshaller\Deserialization\Deserializer;
-use OneMoreAngle\Marshaller\Deserialization\DeserializerFactory;
-use OneMoreAngle\Marshaller\Serialization\SerializationManager;
-use OneMoreAngle\Marshaller\Serialization\Serializer;
+use OneMoreAngle\Marshaller\Extract\Extractor;
+use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
+use OneMoreAngle\Marshaller\Inject\Injector;
+use OneMoreAngle\Marshaller\Inject\InjectorProcess;
 
 class PrimitiveTypeToken extends TypeToken {
 
@@ -23,12 +23,12 @@ class PrimitiveTypeToken extends TypeToken {
         parent::__construct($type);
     }
 
-    public function getSerializer(SerializationManager $factory): Serializer {
-        return $factory->getPrimitiveSerializer();
+    public function getExtractor(ExtractorProcess $visitable): Extractor {
+        return $visitable->getPrimitiveExtractor();
     }
 
-    public function getDeserializer(DeserializerFactory $factory): Deserializer {
-        return $factory->createPrimitiveDeserializer();
+    public function getInjector(InjectorProcess $visitable): Injector {
+        return $visitable->getPrimitiveInjector();
     }
 
     public function key(): string {
