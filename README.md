@@ -4,14 +4,22 @@
 This is a small library to serialize and deserialize PHP data structures.
 
 > **Warning**  
-> This project is currently in very early stages of development and should be considered experimental.
+> This project is in early stages of development and should be considered experimental.
 
 
-## Initial features
-- Support for JSON serialization and deserialization
-- Optional attribute / annotation-based property naming and aliasing
-- Customizable handling of empty fields
+## Current features
+- JSON serialization and deserialization
+- Optional attribute or annotation-based customization of (de)serialization
 - Recursive deduction of property types and optional annotation-based target types
+- Circular reference detection
+- Support for both PHP 8 attributes and Doctrine annotations (PHP 7.4+)
+
+## Planned features 
+- Support for other serialization formats (XML, YAML, etc.)
+- User defined custom (de)serialization logic
+- Performance optimizations
+- More robust object instantiation capabilities
+- Default to using getters and setters for data extraction and injection
 
 ## Installation
 For general use, install the library with composer using:
@@ -65,7 +73,7 @@ class CustomClass {
     public string $property2;
 }
 ```
-When you serialize using the above class as follows:
+When you serialize an instance of the above class as follows:
 
 ```php
 use OneMoreAngle\Marshaller\Api\Json;
@@ -81,7 +89,6 @@ the output will be
 {"custom_name":"test"}
 ```
 When we deserialize with an aliased property in the JSON:
-
 ```php
 use OneMoreAngle\Marshaller\Api\Json;
 
