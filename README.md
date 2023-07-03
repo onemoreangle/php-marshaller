@@ -46,6 +46,55 @@ $serializer = Json::getDefaultSerializerBuilder()->withPropertyMetadataProvider(
 $data = $serializer->marshall($object);
 ```
 
+### Attributes
+You can use attributes to customize the (de)serialization process. For example, you can use the `Name` attribute to map a property to a different serialized name, the `Aliases` to map alternative serialized names to the property, the `Omit` attribute to omit a property from serialization, the `OmitEmpty` attribute to omit a property if it is empty, and the `TargetType` attribute to specify the type of the property to deserialize into. Let's look at an example:
+```php
+use OneMoreAngle\Marshaller\Attribute\Aliases;
+use OneMoreAngle\Marshaller\Attribute\Name;
+use OneMoreAngle\Marshaller\Attribute\Omit;
+use OneMoreAngle\Marshaller\Attribute\OmitEmpty;
+
+class CustomClass
+{
+    #[Name('custom_name')]
+    #[Aliases(['alias1', 'alias2'])]
+    #[OmitEmpty]
+    public string $property;
+    
+    #[Omit]
+    public string $property2;
+}
+```
+When you serialize using the above class as follows:
+```php
+use OneMoreAngle\Marshaller\Api\Json;
+
+$data = new CustomClass();
+$data->property = 'test';
+$data->property2 => 'test2';
+$serialized = Json::marshall($data);
+echo $serialized;
+```
+the output will be
+```json
+{"custom_name":"test"}
+```
+When we deserialize with an aliased property in the JSON:
+```php
+use OneMoreAngle\Marshaller\Api\Json;
+
+$json = '{"alias2":"hello"}';
+$deserialized = Json::unmarshall($json, CustomClass::class);
+print_r($deserialized);
+```
+We get the following output:
+```
+CustomClass Object
+(
+    [property] => hello
+)
+```
+
 
 ## Requirements
 - PHP >= 7.4 (to use attributes PHP 8.0 or higher is required, otherwise you can install doctrine/annotations and use annotations instead) 

@@ -1,6 +1,6 @@
 <?php
 
-namespace OneMoreAngle\Marshaller\Test\Functional;
+namespace OneMoreAngle\Marshaller\Test\Functional\Json;
 
 use OneMoreAngle\Marshaller\Api\Json;
 use OneMoreAngle\Marshaller\Test\Fixtures\AnnotatedOmitPropOrder;

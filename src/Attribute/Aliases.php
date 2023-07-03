@@ -14,7 +14,10 @@ class Aliases {
      */
     public array $names;
 
-    public function __construct(string ...$names) {
+    /**
+     * @param string[] $names
+     */
+    public function __construct(array $names) {
         $this->names = $names;
     }
 }
