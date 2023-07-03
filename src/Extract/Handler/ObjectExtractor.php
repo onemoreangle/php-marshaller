@@ -14,11 +14,11 @@ use SplObjectStorage;
 use stdClass;
 
 class ObjectExtractor implements Extractor {
-    protected ExtractionManager $marshaller;
+    protected ExtractionManager $extractionManager;
     protected CircularReferenceDetectWrapper $circularRefCheck;
 
-    public function __construct(ExtractionManager $marshaller) {
-        $this->marshaller = $marshaller;
+    public function __construct(ExtractionManager $extractionManager) {
+        $this->extractionManager = $extractionManager;
         $this->circularRefCheck = new CircularReferenceDetectWrapper();
     }
 
@@ -36,7 +36,7 @@ class ObjectExtractor implements Extractor {
         if($data instanceof stdClass) {
             // We take on the responsibility of extracting stdClass by creating an array from it and delegating
             // it to the array extractor; there is nothing contextually meaningful to extract from stdClass
-            return $this->marshaller->getArrayExtractor()->extract((array) $data, TypeTokenFactory::array());
+            return $this->extractionManager->getArrayExtractor()->extract((array) $data, TypeTokenFactory::array());
         }
 
         $reflection = new ReflectionClass($data);
@@ -47,7 +47,7 @@ class ObjectExtractor implements Extractor {
             $property->setAccessible(true);
             $value = $property->getValue($data);
             $propertyName = $property->getName();
-            $result[$propertyName] = $this->marshaller->extract($value);
+            $result[$propertyName] = $this->extractionManager->extract($value);
         }
 
         return new IntermediaryData($result, $token);

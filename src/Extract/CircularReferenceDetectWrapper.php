@@ -25,6 +25,16 @@ class CircularReferenceDetectWrapper {
     }
 
     /**
+     * $fn is a function intended to operate on the $data object, performing
+     * any necessary traversal on its properties. If any of these properties
+     * are objects, this should result in a call to execute(...) in the same way
+     * that it did for the original object. This is how this class is able to
+     * detect circular references, granted that the same instance of this class
+     * is used throughout the extraction process.
+     *
+     * @param object $data
+     * @param callable $fn
+     * @return IntermediaryData
      * @throws CircularReferenceException
      */
     public function execute(object $data, callable $fn) : IntermediaryData {

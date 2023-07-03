@@ -2,8 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Test\Functional;
 
-use OneMoreAngle\Marshaller\Extract\ExtractionManager;
-use OneMoreAngle\Marshaller\Serialization\Codecs\JsonCodec;
+use OneMoreAngle\Marshaller\Api\Json;
 use OneMoreAngle\Marshaller\Test\Fixtures\Order;
 use PHPUnit\Framework\TestCase;
 
@@ -25,11 +24,7 @@ class SerializeJsonTest extends TestCase {
             'null' => null,
         ];
 
-        $extract = new ExtractionManager();
-        $extracted = $extract->extract($data);
-
-        $jsonEncoder = new JsonCodec();
-        $json = $jsonEncoder->serialize($extracted);
+        $json = Json::marshall($data);
 
         $this->assertEquals(json_encode($data), $json);
     }
@@ -48,12 +43,7 @@ class SerializeJsonTest extends TestCase {
         ];
         $data->null = null;
 
-        $extract = new ExtractionManager();
-        $extracted = $extract->extract($data);
-
-        $jsonEncoder = new JsonCodec();
-        $json = $jsonEncoder->serialize($extracted);
-
+        $json = Json::marshall($data);
         $this->assertEquals(json_encode($data), $json);
     }
 
@@ -73,13 +63,7 @@ class SerializeJsonTest extends TestCase {
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris.',
         ];
 
-        $extract = new ExtractionManager();
-        $extracted = $extract->extract($data);
-
-        $jsonEncoder = new JsonCodec();
-        $json = $jsonEncoder->serialize($extracted);
-
+        $json = Json::marshall($data);
         $this->assertEquals(json_encode($compare), $json);
     }
-
 }

@@ -25,8 +25,8 @@ class ExtractionManager implements ExtractorProcess {
      */
     public function extract($data) : IntermediaryData {
         $typeToken = TypeTokenFactory::tokenize($data);
-        $serializer = $typeToken->getExtractor($this);
-        return $serializer->extract($data, $typeToken);
+        $extractor = $typeToken->getExtractor($this);
+        return $extractor->extract($data, $typeToken);
     }
 
 
