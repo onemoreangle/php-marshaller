@@ -5,7 +5,7 @@ namespace OneMoreAngle\Marshaller\Api;
 use Exception;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
 use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
-use OneMoreAngle\Marshaller\Inject\InjectorManager;
+use OneMoreAngle\Marshaller\Inject\InjectionManager;
 use OneMoreAngle\Marshaller\Inject\InjectorProcess;
 use OneMoreAngle\Marshaller\Meta\AttributeMetaExtractor;
 use OneMoreAngle\Marshaller\Meta\DoctrineAnnotationMetaExtractor;
@@ -18,7 +18,7 @@ use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
 
 class SerializerBuilder {
     private ?ExtractionManager $extractionManager = null;
-    private ?InjectorManager $injectorManager = null;
+    private ?InjectionManager $injectionManager = null;
     private ?SerializationVisitor $codec = null;
     private ?MetaExtractor $metaExtractor = null;
     private ?PropertyMetadataProvider $propertyMetadataProvider = null;
@@ -38,8 +38,8 @@ class SerializerBuilder {
         return $this;
     }
 
-    public function withInjectorManager(InjectorProcess $injectorManager): SerializerBuilder {
-        $this->injectorManager = $injectorManager;
+    public function withInjectorManager(InjectorProcess $injectionManager): SerializerBuilder {
+        $this->injectionManager = $injectionManager;
         return $this;
     }
 
@@ -48,13 +48,13 @@ class SerializerBuilder {
      */
     public function build(): Serializer {
         $this->extractionManager = $this->extractionManager ?? new ExtractionManager();
-        $this->injectorManager = $this->injectorManager ?? new InjectorManager($this->getPropertyMetadataProvider());
+        $this->injectionManager = $this->injectionManager ?? new InjectionManager($this->getPropertyMetadataProvider());
 
         if($this->codec === null) {
             throw new Exception('A codec is required, none was provided in the builder');
         }
 
-        return new Serializer($this->extractionManager, $this->injectorManager, $this->codec);
+        return new Serializer($this->extractionManager, $this->injectionManager, $this->codec);
     }
 
     private function getDefaultMetaExtractor(): MetaExtractor {

@@ -13,6 +13,6 @@ use OneMoreAngle\Marshaller\Typing\TypeToken;
  */
 class PrimitiveInjector implements Injector {
     public function reconstruct(IntermediaryData $data, TypeToken $token) {
-        return $data;
+        return $data->getValue();
     }
 }

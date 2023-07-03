@@ -3,7 +3,7 @@
 namespace OneMoreAngle\Marshaller\Inject\Handler;
 
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
-use OneMoreAngle\Marshaller\Inject\InjectorManager;
+use OneMoreAngle\Marshaller\Inject\InjectionManager;
 use OneMoreAngle\Marshaller\Inject\Injector;
 use OneMoreAngle\Marshaller\Meta\PropertyMetadataProvider;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
@@ -15,13 +15,14 @@ use ReflectionException;
  * @implements Injector<array, R>
  */
 class ObjectInjector implements Injector {
-    protected InjectorManager $injectorManager;
+    protected InjectionManager $injectorManager;
     protected PropertyMetadataProvider $propertyMetadataProvider;
 
     /**
-     * @param InjectorManager $injectorManager
+     * @param InjectionManager $injectorManager
+     * @param PropertyMetadataProvider $propertyMetadataProvider
      */
-    public function __construct(InjectorManager $injectorManager, PropertyMetadataProvider $propertyMetadataProvider) {
+    public function __construct(InjectionManager $injectorManager, PropertyMetadataProvider $propertyMetadataProvider) {
         $this->injectorManager = $injectorManager;
         $this->propertyMetadataProvider = $propertyMetadataProvider;
     }
@@ -38,7 +39,7 @@ class ObjectInjector implements Injector {
         $object = new $class();
         $reflection = new ReflectionClass($object);
 
-        foreach ($data as $propertyName => $propertyValue) {
+        foreach ($data->getValue() as $propertyName => $propertyValue) {
             // TODO: get property name where alias or name is equal to $propertyName
             $reflectionProperty = $reflection->getProperty($propertyName);
             $reflectionProperty->setAccessible(true);

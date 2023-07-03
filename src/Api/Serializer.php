@@ -4,19 +4,20 @@ namespace OneMoreAngle\Marshaller\Api;
 
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
-use OneMoreAngle\Marshaller\Inject\InjectorManager;
+use OneMoreAngle\Marshaller\Inject\InjectionManager;
 use OneMoreAngle\Marshaller\Serialization\Codecs\JsonCodec;
 use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
+use OneMoreAngle\Marshaller\Typing\TypeToken;
 
 class Serializer {
     private ExtractionManager $extractionManager;
-    private InjectorManager $injectorManager;
+    private InjectionManager $injectionManager;
     private JsonCodec $codec;
 
-    public function __construct(ExtractionManager $extractionManager, InjectorManager $injectorManager, SerializationVisitor $codec) {
+    public function __construct(ExtractionManager $extractionManager, InjectionManager $injectionManager, SerializationVisitor $codec) {
         $this->extractionManager = $extractionManager;
         $this->codec = $codec;
-        $this->injectorManager = $injectorManager;
+        $this->injectionManager = $injectionManager;
     }
 
     /**
@@ -27,8 +28,8 @@ class Serializer {
         return $this->codec->serialize($extracted);
     }
 
-    public function unmarshall($data, $class) {
+    public function unmarshall($data, TypeToken $token) {
         $data = $this->codec->deserialize($data);
-        return $this->injectorManager->reconstruct($data, $class);
+        return $this->injectionManager->reconstruct($data, $token);
     }
 }

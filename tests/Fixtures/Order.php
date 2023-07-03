@@ -78,4 +78,8 @@ class Order {
     public function setDescription(?string $description): void {
         $this->description = $description;
     }
+
+    public function equals(Order $order): bool {
+        return $this->id === $order->id && $this->name === $order->name && $this->price === $order->price && $this->paid === $order->paid && $this->description === $order->description;
+    }
 }
