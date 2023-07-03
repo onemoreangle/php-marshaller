@@ -5,14 +5,13 @@ namespace OneMoreAngle\Marshaller\Api;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
 use OneMoreAngle\Marshaller\Inject\InjectionManager;
-use OneMoreAngle\Marshaller\Serialization\Codecs\JsonCodec;
 use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
 class Serializer {
     private ExtractionManager $extractionManager;
     private InjectionManager $injectionManager;
-    private JsonCodec $codec;
+    private SerializationVisitor $codec;
 
     public function __construct(ExtractionManager $extractionManager, InjectionManager $injectionManager, SerializationVisitor $codec) {
         $this->extractionManager = $extractionManager;
