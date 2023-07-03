@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class AnnotationTest extends TestCase {
 
     public function testSimpleSerialization() {
-        $json = Json::marshall($this->annotatedOrder());
+        $json = Json::marshal($this->annotatedOrder());
 
         $arr = [
             'orderId' => 10,
@@ -25,14 +25,14 @@ class AnnotationTest extends TestCase {
 
     public function testSimpleDeserialization() {
         $json = '{"orderId": 10, "orderName": "John Doe", "orderPrice": 100.0, "orderPaid": false, "orderDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris."}';
-        $object = Json::unmarshall($json, AnnotatedOrder::class);
+        $object = Json::unmarshal($json, AnnotatedOrder::class);
 
         $this->assertObjectEquals($this->annotatedOrder(), $object);
     }
 
     public function testOmitAnnotation() {
         $annotatedOrder = $this->annotatedOmitOrderWithName('John Doe');
-        $json = Json::marshall($annotatedOrder);
+        $json = Json::marshal($annotatedOrder);
 
         // Expect the 'description' to be omitted
         $expectedArray = [
@@ -47,7 +47,7 @@ class AnnotationTest extends TestCase {
 
     public function testOmitEmptyAnnotation() {
         $annotatedOrder = $this->annotatedOmitOrderWithName('');
-        $json = Json::marshall($annotatedOrder);
+        $json = Json::marshal($annotatedOrder);
 
         $expectedArray = [
             'orderId' => 10,

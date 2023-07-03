@@ -24,7 +24,7 @@ class Serializer {
      * @throws CircularReferenceException
      * @return string|false
      */
-    public function marshall($value) {
+    public function marshal($value) {
         $extracted = $this->extractionProcess->extract($value);
         return $this->codec->serialize($extracted);
     }
@@ -34,7 +34,7 @@ class Serializer {
      * @param TypeToken $token
      * @return mixed
      */
-    public function unmarshall(string $data, TypeToken $token) {
+    public function unmarshal(string $data, TypeToken $token) {
         $data = $this->codec->deserialize($data);
         return $this->injectionProcess->reconstruct($data, $token);
     }

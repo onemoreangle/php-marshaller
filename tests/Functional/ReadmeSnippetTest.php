@@ -12,7 +12,7 @@ class ReadmeSnippetTest extends TestCase {
         $data = new ReadmeCustomClass();
         $data->property = 'test';
         $data->property2 = 'test2';
-        $serialized = Json::marshall($data);
+        $serialized = Json::marshal($data);
 
         $expectedSerialized = '{"custom_name":"test"}';
 
@@ -26,7 +26,7 @@ class ReadmeSnippetTest extends TestCase {
         $expectedDeserialized->property = 'hello';
 
 
-        $deserialized = Json::unmarshall($json, ReadmeCustomClass::class);
+        $deserialized = Json::unmarshal($json, ReadmeCustomClass::class);
         $this->assertEquals($expectedDeserialized, $deserialized);
     }
 }

@@ -24,7 +24,7 @@ class SerializeJsonTest extends TestCase {
             'null' => null,
         ];
 
-        $json = Json::marshall($data);
+        $json = Json::marshal($data);
 
         $this->assertEquals(json_encode($data), $json);
     }
@@ -43,7 +43,7 @@ class SerializeJsonTest extends TestCase {
         ];
         $data->null = null;
 
-        $json = Json::marshall($data);
+        $json = Json::marshal($data);
         $this->assertEquals(json_encode($data), $json);
     }
 
@@ -63,7 +63,7 @@ class SerializeJsonTest extends TestCase {
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris.',
         ];
 
-        $json = Json::marshall($data);
+        $json = Json::marshal($data);
         $this->assertEquals(json_encode($compare), $json);
     }
 }

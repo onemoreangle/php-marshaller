@@ -15,7 +15,7 @@ interface SerializationProvider {
      * @throws Exception
      * @return string|false
      */
-    public static function marshall($value);
+    public static function marshal($value);
 
     /**
      * @template T
@@ -24,7 +24,7 @@ interface SerializationProvider {
      * @return mixed|T
      * @throws Exception
      */
-    public static function unmarshall($data, $token);
+    public static function unmarshal($data, $token);
 
     /**
      * @return SerializerBuilder

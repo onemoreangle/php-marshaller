@@ -16,7 +16,7 @@ class DeserializeJsonTest extends TestCase {
             'b' => 2
         ];
 
-        $arr = Json::unmarshall($json, TypeTokenFactory::array());
+        $arr = Json::unmarshal($json, TypeTokenFactory::array());
         $this->assertEquals($expected, $arr);
     }
 
@@ -36,7 +36,7 @@ class DeserializeJsonTest extends TestCase {
             'description' => 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a diam lectus. Sed sit amet ipsum mauris.',
         ];
         $raw = json_encode($compare);
-        $object = Json::unmarshall($raw, Order::class);
+        $object = Json::unmarshal($raw, Order::class);
         $this->assertObjectEquals($data, $object);
     }
 }

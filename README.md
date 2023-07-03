@@ -28,12 +28,13 @@ composer require onemoreangle/php-marshaller
 ## Usage
 ### Simple usage using default settings
 To serialize and deserialize, you can use any of the available serialization providers which come with defaults to read attributes/annotations. For example, to use the `Json` serialization provider with defaults:
+
 ```php
 use OneMoreAngle\Marshaller\Api\Json;
 
 $data = new CustomClass();
-$serialized = Json::marshall($data);
-$deserialized = Json::unmarshall($json, CustomClass::class);
+$serialized = Json::marshal($data);
+$deserialized = Json::unmarshal($json, CustomClass::class);
 ```
 Other serialization providers for different formats will be added in the future.
 
@@ -43,7 +44,7 @@ You can customize the serialization process by creating a `SerializerBuilder` an
 use OneMoreAngle\Marshaller\Api\Json;
 ...
 $serializer = Json::getDefaultSerializerBuilder()->withPropertyMetadataProvider(...)->build();
-$data = $serializer->marshall($object);
+$data = $serializer->marshal($object);
 ```
 
 ### Attributes
@@ -54,8 +55,7 @@ use OneMoreAngle\Marshaller\Attribute\Name;
 use OneMoreAngle\Marshaller\Attribute\Omit;
 use OneMoreAngle\Marshaller\Attribute\OmitEmpty;
 
-class CustomClass
-{
+class CustomClass {
     #[Name('custom_name')]
     #[Aliases(['alias1', 'alias2'])]
     #[OmitEmpty]
@@ -66,13 +66,14 @@ class CustomClass
 }
 ```
 When you serialize using the above class as follows:
+
 ```php
 use OneMoreAngle\Marshaller\Api\Json;
 
 $data = new CustomClass();
 $data->property = 'test';
 $data->property2 => 'test2';
-$serialized = Json::marshall($data);
+$serialized = Json::marshal($data);
 echo $serialized;
 ```
 the output will be
@@ -80,11 +81,12 @@ the output will be
 {"custom_name":"test"}
 ```
 When we deserialize with an aliased property in the JSON:
+
 ```php
 use OneMoreAngle\Marshaller\Api\Json;
 
 $json = '{"alias2":"hello"}';
-$deserialized = Json::unmarshall($json, CustomClass::class);
+$deserialized = Json::unmarshal($json, CustomClass::class);
 print_r($deserialized);
 ```
 We get the following output:

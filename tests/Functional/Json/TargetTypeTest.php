@@ -19,13 +19,13 @@ class TargetTypeTest extends TestCase
         $expectedCustomData->age = 30;
         $expectedPersonData->customData = $expectedCustomData;
 
-        $deserialized = Json::unmarshall($json, PersonData::class);
+        $deserialized = Json::unmarshal($json, PersonData::class);
         $this->assertEquals($expectedPersonData, $deserialized);
     }
 
     public function testTargetTypeUnresolved() {
         $json = '{"customData":{"name":"John Doe","age":30}}';
         $this->expectException(UnresolvedTargetTypeException::class);
-        Json::unmarshall($json, UnresolvedPersonData::class);
+        Json::unmarshal($json, UnresolvedPersonData::class);
     }
 }
