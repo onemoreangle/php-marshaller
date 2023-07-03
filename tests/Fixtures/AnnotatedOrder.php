@@ -2,11 +2,42 @@
 
 namespace OneMoreAngle\Marshaller\Test\Fixtures;
 
-class Order {
+use OneMoreAngle\Marshaller\Attribute\Name;
+
+class AnnotatedOrder {
+    /**
+     * @Name("orderId")
+     * @var int
+     */
+    #[Name("orderId")]
     private int $id;
+
+    /**
+     * @Name("orderName")
+     * @var string
+     */
+    #[Name("orderName")]
     private string $name;
+
+    /**
+     * @Name("orderPrice")
+     * @var float
+     */
+    #[Name("orderPrice")]
     private float $price;
+
+    /**
+     * @Name("orderPaid")
+     * @var bool
+     */
+    #[Name("orderPaid")]
     private bool $paid;
+
+    /**
+     * @Name("orderDescription")
+     * @var string|null
+     */
+    #[Name("orderDescription")]
     private ?string $description = null;
 
     /**
@@ -79,7 +110,7 @@ class Order {
         $this->description = $description;
     }
 
-    public function equals(Order $order): bool {
+    public function equals(AnnotatedOrder $order): bool {
         return $this->getId() === $order->getId()
             && $this->getName() === $order->getName()
             && $this->getPrice() === $order->getPrice()

@@ -3,8 +3,9 @@
 namespace OneMoreAngle\Marshaller\Extract;
 
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
+use OneMoreAngle\Marshaller\Implementation\Process;
 
-interface ExtractionProcess {
+interface ExtractionProcess extends Process {
 
     /**
      * @param mixed $data

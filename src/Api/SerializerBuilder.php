@@ -47,7 +47,7 @@ class SerializerBuilder {
      * @throws Exception
      */
     public function build(): Serializer {
-        $this->extractionProcess = $this->extractionProcess ?? new ExtractionManager();
+        $this->extractionProcess = $this->extractionProcess ?? new ExtractionManager($this->getPropertyMetadataProvider());
         $this->injectionProcess = $this->injectionProcess ?? new InjectionManager($this->getPropertyMetadataProvider());
 
         if($this->codec === null) {

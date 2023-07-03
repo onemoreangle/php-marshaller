@@ -45,21 +45,48 @@ class ObjectInjector implements Injector {
         $class = $token->key();
         $object = new $class();
         $reflection = new ReflectionClass($object);
+        $properties = $reflection->getProperties();
 
-        foreach($data->getValue() as $propertyName => $propertyValue) {
-            // TODO: get property name where alias or name is equal to $propertyName
-            $reflectionProperty = $reflection->getProperty($propertyName);
-            $reflectionProperty->setAccessible(true);
-            $typeToken = $this->propertyMetadataProvider->getTargetType($reflectionProperty);
+        foreach($properties as $property) {
+            $property->setAccessible(true);
+
+            $name = $this->propertyMetadataProvider->getSerializationName($property);
+            $aliases = $this->propertyMetadataProvider->getSerializationAliases($property);
+
+            $names = array_filter([$name, ...$aliases]);
+
+            // get property value from data, check name first, then aliases
+            $propertyValue = $this->getPropertyValue($data, ...$names);
+
+            if ($propertyValue === null) {
+                continue;
+            }
+
+            $typeToken = $this->propertyMetadataProvider->getTargetType($property);
 
             if($typeToken === null) {
-                throw new UnresolvedTargetTypeException("Could not resolve target type for property $propertyName in class $class");
+                throw new UnresolvedTargetTypeException("Could not resolve target type for property $name in class $class");
             }
 
             $deserializer = $this->injectorManager->create($typeToken);
-            $reflectionProperty->setValue($object, $deserializer->reconstruct($propertyValue, $typeToken));
+            $property->setValue($object, $deserializer->reconstruct($propertyValue, $typeToken));
         }
 
         return $object;
+    }
+
+    /**
+     * @param IntermediaryData<IntermediaryData[]> $data
+     * @param string ...$names
+     * @return IntermediaryData|null
+     */
+    protected function getPropertyValue(IntermediaryData $data, string ...$names) : ?IntermediaryData {
+       foreach ($names as $alias) {
+            if (isset($data->getValue()[$alias])) {
+                return $data->getValue()[$alias];
+            }
+        }
+
+        return null;
     }
 }

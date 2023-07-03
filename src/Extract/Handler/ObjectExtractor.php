@@ -4,13 +4,13 @@ namespace OneMoreAngle\Marshaller\Extract\Handler;
 
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
+use OneMoreAngle\Marshaller\Exception\UnresolvedPropertyMetaData;
 use OneMoreAngle\Marshaller\Extract\CircularReferenceDetectWrapper;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
 use OneMoreAngle\Marshaller\Extract\Extractor;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 use ReflectionClass;
-use SplObjectStorage;
 use stdClass;
 
 class ObjectExtractor implements Extractor {
@@ -26,12 +26,16 @@ class ObjectExtractor implements Extractor {
      * @param object $data
      * @param TypeToken $token
      * @return IntermediaryData
-     * @throws CircularReferenceException
+     * @throws CircularReferenceException|UnresolvedPropertyMetaData
      */
     public function extract($data, TypeToken $token): IntermediaryData {
         return $this->circularRefCheck->execute($data, fn() => $this->extractData($data, $token));
     }
 
+    /**
+     * @throws CircularReferenceException
+     * @throws UnresolvedPropertyMetaData
+     */
     public function extractData(object $data, TypeToken $token): IntermediaryData {
         if($data instanceof stdClass) {
             // We take on the responsibility of extracting stdClass by creating an array from it and delegating
@@ -43,11 +47,23 @@ class ObjectExtractor implements Extractor {
 
         $result = [];
         foreach ($reflection->getProperties() as $property) {
-            // TODO: use stage to extract metadata from property to influence the process
+            if($this->extractionManager->getPropertyMetadataProvider()->isOmit($property) === true) {
+                continue;
+            }
+
+            $name = $this->extractionManager->getPropertyMetadataProvider()->getSerializationName($property);
+            if($name === null) {
+                throw new UnresolvedPropertyMetaData("Could not resolve serialization name for property {$property->getName()} in class {$reflection->getName()} using the configured PropertyMetadataProvider");
+            }
+
+            $omitEmpty = $this->extractionManager->getPropertyMetadataProvider()->isOmitEmpty($property);
             $property->setAccessible(true);
             $value = $property->getValue($data);
-            $propertyName = $property->getName();
-            $result[$propertyName] = $this->extractionManager->extract($value);
+            if($omitEmpty === true && empty($value)) {
+                continue;
+            }
+
+            $result[$name] = $this->extractionManager->extract($value);
         }
 
         return new IntermediaryData($result, $token);

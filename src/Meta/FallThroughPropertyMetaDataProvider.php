@@ -23,14 +23,24 @@ class FallThroughPropertyMetaDataProvider implements PropertyMetadataProvider {
         return $this;
     }
 
-    public function getSerializationName(ReflectionProperty $property): ?string {
+    /**
+     * @template T
+     * @param callable(PropertyMetadataProvider):T $method
+     * @param callable(T): bool $isEmpty
+     * @return T|null
+     */
+    private function fallthroughFetch(callable $method, callable $isEmpty) {
         foreach ($this->providers as $provider) {
-            $name = $provider->getSerializationName($property);
-            if ($name !== null) {
-                return $name;
+            $result = $method($provider);
+            if (!$isEmpty($result)) {
+                return $result;
             }
         }
         return null;
+    }
+
+    public function getSerializationName(ReflectionProperty $property): ?string {
+        return $this->fallthroughFetch(fn($provider) => $provider->getSerializationName($property), fn($result) => $result === null);
     }
 
     /**
@@ -38,32 +48,18 @@ class FallThroughPropertyMetaDataProvider implements PropertyMetadataProvider {
      * @return string[]
      */
     public function getSerializationAliases(ReflectionProperty $property): array {
-        foreach ($this->providers as $provider) {
-            $aliases = $provider->getSerializationAliases($property);
-            if (!empty($aliases)) {
-                return $aliases;
-            }
-        }
-        return [];
+        return $this->fallthroughFetch(fn($provider) => $provider->getSerializationAliases($property), fn($result) => empty($result)) ?? [];
     }
 
     public function getTargetType(ReflectionProperty $property): ?TypeToken {
-        foreach ($this->providers as $provider) {
-            $type = $provider->getTargetType($property);
-            if ($type !== null) {
-                return $type;
-            }
-        }
-        return null;
+        return $this->fallthroughFetch(fn($provider) => $provider->getTargetType($property), fn($result) => $result === null);
     }
 
     public function isOmitEmpty(ReflectionProperty $property): ?bool {
-        foreach ($this->providers as $provider) {
-            $omit = $provider->isOmitEmpty($property);
-            if ($omit !== null) {
-                return $omit;
-            }
-        }
-        return null;
+        return $this->fallthroughFetch(fn($provider) => $provider->isOmitEmpty($property), fn($result) => $result === null);
+    }
+
+    public function isOmit(ReflectionProperty $property): ?bool {
+        return $this->fallthroughFetch(fn($provider) => $provider->isOmit($property), fn($result) => $result === null);
     }
 }

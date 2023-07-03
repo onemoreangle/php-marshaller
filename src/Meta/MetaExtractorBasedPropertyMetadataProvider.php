@@ -4,6 +4,7 @@ namespace OneMoreAngle\Marshaller\Meta;
 
 use OneMoreAngle\Marshaller\Attribute\Aliases;
 use OneMoreAngle\Marshaller\Attribute\Name;
+use OneMoreAngle\Marshaller\Attribute\Omit;
 use OneMoreAngle\Marshaller\Attribute\OmitEmpty;
 use OneMoreAngle\Marshaller\Attribute\TargetType;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
@@ -34,6 +35,11 @@ class MetaExtractorBasedPropertyMetadataProvider implements PropertyMetadataProv
 
     public function isOmitEmpty(ReflectionProperty $property): ?bool {
         $annotation = $this->extractor->extractFromProperty($property, OmitEmpty::class);
-        return $annotation ? $annotation->omit : null;
+        return $annotation ? true : null;
+    }
+
+    public function isOmit(ReflectionProperty $property): ?bool {
+        $annotation = $this->extractor->extractFromProperty($property, Omit::class);
+        return $annotation ? true : null;
     }
 }

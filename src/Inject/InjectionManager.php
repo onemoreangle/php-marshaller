@@ -41,4 +41,8 @@ class InjectionManager implements TypeInjectorProvider, InjectionProcess {
     public function reconstruct(IntermediaryData $data, TypeToken $token) {
         return $this->create($token)->reconstruct($data, $token);
     }
+
+    public function getPropertyMetadataProvider() : PropertyMetadataProvider {
+        return $this->propertyMetadataProvider;
+    }
 }

@@ -3,9 +3,10 @@
 namespace OneMoreAngle\Marshaller\Inject;
 
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
+use OneMoreAngle\Marshaller\Implementation\Process;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
-interface InjectionProcess {
+interface InjectionProcess extends Process {
 
     /**
      * @param IntermediaryData $data

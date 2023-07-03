@@ -40,7 +40,11 @@ class ReflectionPropertyMetadataProvider implements PropertyMetadataProvider {
     }
 
     public function isOmitEmpty(ReflectionProperty $property): ?bool {
-        // Add logic to decide if the property should be omitted when empty
-        return false;
+        return null;
+    }
+
+
+    public function isOmit(ReflectionProperty $property): ?bool {
+        return null;
     }
 }

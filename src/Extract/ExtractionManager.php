@@ -7,14 +7,17 @@ use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Extract\Handler\ArrayExtractor;
 use OneMoreAngle\Marshaller\Extract\Handler\ObjectExtractor;
 use OneMoreAngle\Marshaller\Extract\Handler\PrimitiveExtractor;
+use OneMoreAngle\Marshaller\Meta\PropertyMetadataProvider;
 use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 
 class ExtractionManager implements TypeExtractorProvider, ExtractionProcess {
+    private PropertyMetadataProvider $propertyMetadataProvider;
     private PrimitiveExtractor $primitiveExtractor;
     private ObjectExtractor $objectExtractor;
     private ArrayExtractor $arrayExtractor;
 
-    public function __construct(PrimitiveExtractor $primitiveExtractor = null, ObjectExtractor $objectExtractor = null, ArrayExtractor $arrayExtractor = null) {
+    public function __construct(PropertyMetadataProvider $propertyMetadataProvider, PrimitiveExtractor $primitiveExtractor = null, ObjectExtractor $objectExtractor = null, ArrayExtractor $arrayExtractor = null) {
+        $this->propertyMetadataProvider = $propertyMetadataProvider;
         $this->primitiveExtractor = $primitiveExtractor ?? new PrimitiveExtractor();
         $this->objectExtractor = $objectExtractor ?? new ObjectExtractor($this);
         $this->arrayExtractor = $arrayExtractor ?? new ArrayExtractor($this);
@@ -40,5 +43,9 @@ class ExtractionManager implements TypeExtractorProvider, ExtractionProcess {
 
     public function getArrayExtractor() : Extractor {
         return $this->arrayExtractor;
+    }
+
+    public function getPropertyMetadataProvider() : PropertyMetadataProvider {
+        return $this->propertyMetadataProvider;
     }
 }

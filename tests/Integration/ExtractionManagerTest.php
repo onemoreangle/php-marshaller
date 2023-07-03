@@ -4,6 +4,7 @@ namespace OneMoreAngle\Marshaller\Test\Integration;
 
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
+use OneMoreAngle\Marshaller\Meta\ReflectionPropertyMetadataProvider;
 use OneMoreAngle\Marshaller\Test\Fixtures\Circular\Bar;
 use OneMoreAngle\Marshaller\Test\Fixtures\Circular\Foo;
 use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
@@ -18,7 +19,7 @@ class ExtractionManagerTest extends TestCase {
 
         $this->expectException(CircularReferenceException::class);
 
-        $extractor = new ExtractionManager();
+        $extractor = new ExtractionManager(new ReflectionPropertyMetadataProvider());
         $extractor->extract($foo);
     }
 
@@ -32,7 +33,7 @@ class ExtractionManagerTest extends TestCase {
 
         $this->expectException(CircularReferenceException::class);
 
-        $extractor = new ExtractionManager();
+        $extractor = new ExtractionManager(new ReflectionPropertyMetadataProvider());
         $extractor->extract($data);
     }
 }

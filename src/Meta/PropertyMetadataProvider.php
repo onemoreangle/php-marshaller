@@ -11,6 +11,10 @@ interface PropertyMetadataProvider {
      * @return string[]
      */
     public function getSerializationAliases(ReflectionProperty $property): array;
+
     public function getTargetType(ReflectionProperty $property): ?TypeToken;
+
     public function isOmitEmpty(ReflectionProperty $property): ?bool;
+
+    public function isOmit(ReflectionProperty $property): ?bool;
 }

@@ -8,6 +8,6 @@ namespace OneMoreAngle\Marshaller\Attribute;
  * @Target("PROPERTY")
  */
 #[\Attribute(\Attribute::TARGET_PROPERTY)]
-class OmitEmpty {
-    
+class Omit {
+
 }
