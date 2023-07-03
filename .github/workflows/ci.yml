@@ -10,14 +10,16 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        php: ['7.4', '8.0', '8.1', '8.2']
     steps:
       - uses: actions/checkout@v2
 
       - name: Php setup
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php }}
           extensions: mbstring, intl
 
       - name: Validate composer

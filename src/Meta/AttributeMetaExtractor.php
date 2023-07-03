@@ -54,6 +54,11 @@ class AttributeMetaExtractor implements MetaExtractor {
             throw new Exception('PHP 8.0.0 or higher is required to use PhpAttributeReader');
         }
 
+        // PHPStan doesn't seem to recognize the above check, so we have to do this to avoid a warning
+        if(method_exists($property, 'getAttributes') === false) {
+            throw new Exception('PHP 8.0.0 or higher is required to use PhpAttributeReader');
+        }
+
         $attributes = $property->getAttributes($attributeClass);
         return $attributes ? $attributes[0]->newInstance() : null;
     }
