@@ -13,6 +13,10 @@ class JsonCodec implements SerializationVisitor {
         return json_encode($rawData);
     }
 
+    /**
+     * @param mixed $data
+     * @return mixed
+     */
     private function flatten($data) {
         if ($data instanceof IntermediaryData) {
             return $this->flatten($data->getValue());
@@ -23,11 +27,14 @@ class JsonCodec implements SerializationVisitor {
         }
     }
 
-    public function deserialize($input): IntermediaryData {
+    public function deserialize(string $input): IntermediaryData {
         $rawData = json_decode($input, true);
         return $this->constructIntermediaryData($rawData);
     }
 
+    /**
+     * @param mixed $data
+     */
     private function constructIntermediaryData($data): IntermediaryData {
         if (is_array($data)) {
             return new IntermediaryData(

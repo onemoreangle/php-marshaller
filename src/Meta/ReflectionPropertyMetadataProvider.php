@@ -14,6 +14,10 @@ class ReflectionPropertyMetadataProvider implements PropertyMetadataProvider {
         return $property->getName();
     }
 
+    /**
+     * @param ReflectionProperty $property
+     * @return string[]
+     */
     public function getSerializationAliases(ReflectionProperty $property): array {
         return []; // Add logic to find aliases
     }

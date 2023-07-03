@@ -13,7 +13,7 @@ use ReflectionProperty;
 interface MetaExtractor {
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionClass $class
      * @param class-string<T> $annotation
      * @return T|null
@@ -21,7 +21,7 @@ interface MetaExtractor {
     public function extractFromClass(ReflectionClass $class, string $annotation) : ?object;
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionProperty $property
      * @param class-string<T> $annotation
      * @return T|null
@@ -29,7 +29,7 @@ interface MetaExtractor {
     public function extractFromProperty(ReflectionProperty $property, string $annotation) : ?object;
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionMethod $method
      * @param class-string<T> $annotation
      * @return T|null

@@ -28,6 +28,7 @@ abstract class CachedSerializerProvider implements SerializationProvider {
      * @param mixed $value
      * @throws CircularReferenceException
      * @throws Exception
+     * @return string|false
      */
     public static function marshall($value) {
         return static::getSerializer()->marshall($value);
@@ -41,8 +42,10 @@ abstract class CachedSerializerProvider implements SerializationProvider {
      * @throws Exception
      */
     public static function unmarshall($data, $token) {
-        if(!is_a($token, TypeToken::class)) {
+        if(is_string($token)) {
             $token = TypeTokenFactory::object($token);
+        } else if(!is_a($token, TypeToken::class)) {
+            throw new Exception("Invalid token type, expected class string or TypeToken");
         }
 
         return static::getSerializer()->unmarshall($data, $token);

@@ -23,7 +23,7 @@ class ObjectExtractor implements Extractor {
     }
 
     /**
-     * @param $data
+     * @param object $data
      * @param TypeToken $token
      * @return IntermediaryData
      * @throws CircularReferenceException

@@ -9,7 +9,7 @@ use OneMoreAngle\Marshaller\Inject\Handler\PrimitiveInjector;
 use OneMoreAngle\Marshaller\Meta\PropertyMetadataProvider;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
-class InjectionManager implements InjectorProcess {
+class InjectionManager implements TypeInjectorProvider, InjectionProcess {
     protected PropertyMetadataProvider $propertyMetadataProvider;
     private PrimitiveInjector $primitiveInjector;
     private ObjectInjector $objectInjector;

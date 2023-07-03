@@ -4,9 +4,9 @@ namespace OneMoreAngle\Marshaller\Typing;
 
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Extract\Extractor;
-use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
+use OneMoreAngle\Marshaller\Extract\TypeExtractorProvider;
 use OneMoreAngle\Marshaller\Inject\Injector;
-use OneMoreAngle\Marshaller\Inject\InjectorProcess;
+use OneMoreAngle\Marshaller\Inject\TypeInjectorProvider;
 
 abstract class TypeToken {
 
@@ -18,6 +18,9 @@ abstract class TypeToken {
     const STRING = "string";
     const OBJECT = "object";
 
+    /**
+     * @var string[]
+     */
     protected static $types = [
         self::NULL,
         self::ARRAY,
@@ -28,17 +31,31 @@ abstract class TypeToken {
         self::OBJECT
     ];
 
+    /**
+     * @param string $type
+     */
     protected string $type;
 
+    /**
+     * @param string $type
+     */
     protected function __construct($type) {
         $this->type = $type;
     }
 
-    abstract public function getExtractor(ExtractorProcess $visitable): Extractor;
+    /**
+     * @param TypeExtractorProvider $visitable
+     * @return Extractor<mixed> the extractor for this token's type
+     */
+    abstract public function getExtractor(TypeExtractorProvider $visitable): Extractor;
 
-    abstract public function getInjector(InjectorProcess $visitable): Injector;
+    /**
+     * @param TypeInjectorProvider $visitable
+     * @return Injector<mixed> the injector for this token's type
+     */
+    abstract public function getInjector(TypeInjectorProvider $visitable): Injector;
 
-    abstract public function visit(TypeVisitor $visitable, IntermediaryData $data);
+    abstract public function visit(TypeVisitor $visitable, IntermediaryData $data) : void;
 
     /**
      * This gets a unique key for this type token. This is used to cache serializers

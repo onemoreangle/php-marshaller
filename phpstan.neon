@@ -1,4 +1,7 @@
 parameters:
-    level: 1
+    level: 9
     paths:
         - src
+    checkGenericClassInNonGenericObjectType: false
+    ignoreErrors:
+        - '#Call to an undefined method ReflectionClass|ReflectionMethod|ReflectionProperty::getAttributes.+#'

@@ -13,12 +13,13 @@ interface SerializationProvider {
      * @param mixed $value
      * @throws CircularReferenceException
      * @throws Exception
+     * @return string|false
      */
     public static function marshall($value);
 
     /**
      * @template T
-     * @param $data
+     * @param string $data
      * @param TypeToken|class-string<T> $token
      * @return mixed|T
      * @throws Exception

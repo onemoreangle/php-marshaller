@@ -24,7 +24,7 @@ class MetaExtractorBasedPropertyMetadataProvider implements PropertyMetadataProv
 
     public function getSerializationAliases(ReflectionProperty $property): array {
         $annotation = $this->extractor->extractFromProperty($property, Aliases::class);
-        return $annotation ? $annotation->aliases : [];
+        return $annotation ? $annotation->names : [];
     }
 
     public function getTargetType(ReflectionProperty $property): ?TypeToken {
@@ -34,6 +34,6 @@ class MetaExtractorBasedPropertyMetadataProvider implements PropertyMetadataProv
 
     public function isOmitEmpty(ReflectionProperty $property): ?bool {
         $annotation = $this->extractor->extractFromProperty($property, OmitEmpty::class);
-        return $annotation ? $annotation->omitEmpty : null;
+        return $annotation ? $annotation->omit : null;
     }
 }

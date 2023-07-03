@@ -4,6 +4,16 @@ namespace OneMoreAngle\Marshaller\Serialization;
 
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
 interface SerializationVisitor {
+
+    /**
+     * @param IntermediaryData $data
+     * @return string|false
+     */
     public function serialize(IntermediaryData $data);
-    public function deserialize($input) : IntermediaryData;
+
+    /**
+     * @param string $input
+     * @return IntermediaryData
+     */
+    public function deserialize(string $input) : IntermediaryData;
 }

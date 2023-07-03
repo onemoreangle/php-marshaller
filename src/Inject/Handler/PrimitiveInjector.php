@@ -7,9 +7,8 @@ use OneMoreAngle\Marshaller\Inject\Injector;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
 /**
- * @template T
  * @template R
- * @template-extends Injector<T, R>
+ * @template-implements Injector<R>
  */
 class PrimitiveInjector implements Injector {
     public function reconstruct(IntermediaryData $data, TypeToken $token) {

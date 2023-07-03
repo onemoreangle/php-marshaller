@@ -10,7 +10,7 @@ use ReflectionProperty;
 class AttributeMetaExtractor implements MetaExtractor {
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionClass $class
      * @param class-string<T> $annotation
      * @return T|null
@@ -21,7 +21,7 @@ class AttributeMetaExtractor implements MetaExtractor {
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionProperty $property
      * @param class-string<T> $annotation
      * @return T|null
@@ -32,7 +32,7 @@ class AttributeMetaExtractor implements MetaExtractor {
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionMethod $method
      * @param class-string<T> $annotation
      * @return T|null
@@ -43,7 +43,7 @@ class AttributeMetaExtractor implements MetaExtractor {
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionProperty|ReflectionClass|ReflectionMethod $property
      * @param class-string<T> $attributeClass
      * @return T|null

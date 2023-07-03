@@ -6,10 +6,13 @@ use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
+/**
+ * @template T
+ */
 interface Extractor {
 
     /**
-     * @param $data
+     * @param T $data
      * @param TypeToken $token
      * @return IntermediaryData
      * @throws CircularReferenceException

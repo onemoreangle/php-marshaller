@@ -6,7 +6,7 @@ use OneMoreAngle\Marshaller\Inject\Handler\ArrayInjector;
 use OneMoreAngle\Marshaller\Inject\Handler\ObjectInjector;
 use OneMoreAngle\Marshaller\Inject\Handler\PrimitiveInjector;
 
-interface InjectorProcess extends Injector {
+interface TypeInjectorProvider extends Injector {
 
     public function getPrimitiveInjector() : Injector;
 

@@ -9,7 +9,10 @@ use ReflectionProperty;
 
 class DoctrineAnnotationMetaExtractor implements MetaExtractor {
 
-    private object $reader;
+    /**
+     * @var \Doctrine\Common\Annotations\AnnotationReader $reader
+     */
+    private $reader;
 
     /**
      * @param object|null $reader
@@ -20,15 +23,15 @@ class DoctrineAnnotationMetaExtractor implements MetaExtractor {
             throw new Exception('Doctrine\Common\Annotations\AnnotationReader is required to use DoctrineAnnotationMetaExtractor, switch MetaExtractor implementation or run: composer require doctrine/annotations');
         }
 
-        if(!(is_a($reader, '\Doctrine\Common\Annotations\AnnotationReader'))) {
-            $reader = new \Doctrine\Common\Annotations\AnnotationReader();
+        if($reader !== null && !is_a($reader, '\Doctrine\Common\Annotations\AnnotationReader')) {
+            throw new Exception('DoctrineAnnotationMetaExtractor requires an instance of Doctrine\Common\Annotations\AnnotationReader');
         }
 
-        $this->reader = new \Doctrine\Common\Annotations\AnnotationReader();
+        $this->reader = $reader ?? new \Doctrine\Common\Annotations\AnnotationReader();
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionClass $class
      * @param class-string<T> $annotation
      * @return T|null
@@ -39,7 +42,7 @@ class DoctrineAnnotationMetaExtractor implements MetaExtractor {
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionProperty $property
      * @param class-string<T> $annotation
      * @return T|null
@@ -50,7 +53,7 @@ class DoctrineAnnotationMetaExtractor implements MetaExtractor {
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param ReflectionMethod $method
      * @param class-string<T> $annotation
      * @return T|null

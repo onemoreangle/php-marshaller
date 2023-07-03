@@ -4,12 +4,15 @@ namespace OneMoreAngle\Marshaller\Typing;
 
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Extract\Extractor;
-use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
+use OneMoreAngle\Marshaller\Extract\TypeExtractorProvider;
 use OneMoreAngle\Marshaller\Inject\Injector;
-use OneMoreAngle\Marshaller\Inject\InjectorProcess;
+use OneMoreAngle\Marshaller\Inject\TypeInjectorProvider;
 
 class ClassTypeToken extends TypeToken {
 
+    /**
+     * @var ClassTypeToken[]
+     */
     protected static array $instanceCache = [];
 
     private string $class;
@@ -31,15 +34,15 @@ class ClassTypeToken extends TypeToken {
         return $this->class;
     }
 
-    public function getExtractor(ExtractorProcess $visitable): Extractor {
+    public function getExtractor(TypeExtractorProvider $visitable): Extractor {
         return $visitable->getObjectExtractor();
     }
 
-    public function getInjector(InjectorProcess $visitable): Injector {
+    public function getInjector(TypeInjectorProvider $visitable): Injector {
         return $visitable->getObjectInjector();
     }
 
-    public function visit(TypeVisitor $visitable, IntermediaryData $data) {
+    public function visit(TypeVisitor $visitable, IntermediaryData $data): void {
         $visitable->visitObject($data);
     }
 

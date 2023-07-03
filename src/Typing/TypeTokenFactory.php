@@ -33,10 +33,15 @@ class TypeTokenFactory {
         return PrimitiveTypeToken::create(TypeToken::NULL);
     }
 
+    /**
+     * @param mixed $value
+     * @return TypeToken
+     */
     public static function tokenize($value) : TypeToken {
         $type = gettype($value);
 
         if($type === 'object') {
+            /** @var object $value */
             return self::object(get_class($value));
         }
 

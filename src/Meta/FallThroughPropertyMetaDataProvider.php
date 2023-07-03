@@ -11,6 +11,9 @@ class FallThroughPropertyMetaDataProvider implements PropertyMetadataProvider {
      */
     private array $providers;
 
+    /**
+     * @param PropertyMetadataProvider[] $providers
+     */
     public function __construct(array $providers = []) {
         $this->providers = $providers;
     }
@@ -30,6 +33,10 @@ class FallThroughPropertyMetaDataProvider implements PropertyMetadataProvider {
         return null;
     }
 
+    /**
+     * @param ReflectionProperty $property
+     * @return string[]
+     */
     public function getSerializationAliases(ReflectionProperty $property): array {
         foreach ($this->providers as $provider) {
             $aliases = $provider->getSerializationAliases($property);

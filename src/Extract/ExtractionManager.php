@@ -9,15 +9,15 @@ use OneMoreAngle\Marshaller\Extract\Handler\ObjectExtractor;
 use OneMoreAngle\Marshaller\Extract\Handler\PrimitiveExtractor;
 use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 
-class ExtractionManager implements ExtractorProcess {
-    private PrimitiveExtractor $primitiveHandler;
-    private ObjectExtractor $objectHandler;
-    private ArrayExtractor $arrayHandler;
+class ExtractionManager implements TypeExtractorProvider, ExtractionProcess {
+    private PrimitiveExtractor $primitiveExtractor;
+    private ObjectExtractor $objectExtractor;
+    private ArrayExtractor $arrayExtractor;
 
-    public function __construct($primitiveHandler = null, $objectHandler = null, $arrayHandler = null) {
-        $this->primitiveHandler = $primitiveHandler ?? new PrimitiveExtractor();
-        $this->objectHandler = $objectHandler ?? new ObjectExtractor($this);
-        $this->arrayHandler = $arrayHandler ?? new ArrayExtractor($this);
+    public function __construct(PrimitiveExtractor $primitiveExtractor = null, ObjectExtractor $objectExtractor = null, ArrayExtractor $arrayExtractor = null) {
+        $this->primitiveExtractor = $primitiveExtractor ?? new PrimitiveExtractor();
+        $this->objectExtractor = $objectExtractor ?? new ObjectExtractor($this);
+        $this->arrayExtractor = $arrayExtractor ?? new ArrayExtractor($this);
     }
 
     /**
@@ -31,14 +31,14 @@ class ExtractionManager implements ExtractorProcess {
 
 
     public function getPrimitiveExtractor() : Extractor {
-        return $this->primitiveHandler;
+        return $this->primitiveExtractor;
     }
 
     public function getObjectExtractor() : Extractor {
-        return $this->objectHandler;
+        return $this->objectExtractor;
     }
 
     public function getArrayExtractor() : Extractor {
-        return $this->arrayHandler;
+        return $this->arrayExtractor;
     }
 }

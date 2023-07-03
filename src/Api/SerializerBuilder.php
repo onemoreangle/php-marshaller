@@ -4,9 +4,9 @@ namespace OneMoreAngle\Marshaller\Api;
 
 use Exception;
 use OneMoreAngle\Marshaller\Extract\ExtractionManager;
-use OneMoreAngle\Marshaller\Extract\ExtractorProcess;
+use OneMoreAngle\Marshaller\Extract\ExtractionProcess;
 use OneMoreAngle\Marshaller\Inject\InjectionManager;
-use OneMoreAngle\Marshaller\Inject\InjectorProcess;
+use OneMoreAngle\Marshaller\Inject\InjectionProcess;
 use OneMoreAngle\Marshaller\Meta\AttributeMetaExtractor;
 use OneMoreAngle\Marshaller\Meta\DoctrineAnnotationMetaExtractor;
 use OneMoreAngle\Marshaller\Meta\FallThroughPropertyMetaDataProvider;
@@ -17,14 +17,14 @@ use OneMoreAngle\Marshaller\Meta\ReflectionPropertyMetadataProvider;
 use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
 
 class SerializerBuilder {
-    private ?ExtractionManager $extractionManager = null;
-    private ?InjectionManager $injectionManager = null;
+    private ?ExtractionProcess $extractionProcess = null;
+    private ?InjectionProcess $injectionProcess = null;
     private ?SerializationVisitor $codec = null;
     private ?MetaExtractor $metaExtractor = null;
     private ?PropertyMetadataProvider $propertyMetadataProvider = null;
 
-    public function withExtractionManager(ExtractorProcess $extractionManager): SerializerBuilder {
-        $this->extractionManager = $extractionManager;
+    public function withExtractionManager(ExtractionProcess $extractionProcess): SerializerBuilder {
+        $this->extractionProcess = $extractionProcess;
         return $this;
     }
 
@@ -38,8 +38,8 @@ class SerializerBuilder {
         return $this;
     }
 
-    public function withInjectorManager(InjectorProcess $injectionManager): SerializerBuilder {
-        $this->injectionManager = $injectionManager;
+    public function withInjectorManager(InjectionProcess $injectionProcess): SerializerBuilder {
+        $this->injectionProcess = $injectionProcess;
         return $this;
     }
 
@@ -47,14 +47,14 @@ class SerializerBuilder {
      * @throws Exception
      */
     public function build(): Serializer {
-        $this->extractionManager = $this->extractionManager ?? new ExtractionManager();
-        $this->injectionManager = $this->injectionManager ?? new InjectionManager($this->getPropertyMetadataProvider());
+        $this->extractionProcess = $this->extractionProcess ?? new ExtractionManager();
+        $this->injectionProcess = $this->injectionProcess ?? new InjectionManager($this->getPropertyMetadataProvider());
 
         if($this->codec === null) {
             throw new Exception('A codec is required, none was provided in the builder');
         }
 
-        return new Serializer($this->extractionManager, $this->injectionManager, $this->codec);
+        return new Serializer($this->extractionProcess, $this->injectionProcess, $this->codec);
     }
 
     private function getDefaultMetaExtractor(): MetaExtractor {

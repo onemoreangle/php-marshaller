@@ -3,32 +3,39 @@
 namespace OneMoreAngle\Marshaller\Api;
 
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
-use OneMoreAngle\Marshaller\Extract\ExtractionManager;
-use OneMoreAngle\Marshaller\Inject\InjectionManager;
+use OneMoreAngle\Marshaller\Extract\ExtractionProcess;
+use OneMoreAngle\Marshaller\Inject\InjectionProcess;
 use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
 class Serializer {
-    private ExtractionManager $extractionManager;
-    private InjectionManager $injectionManager;
+    private ExtractionProcess $extractionProcess;
+    private InjectionProcess $injectionProcess;
     private SerializationVisitor $codec;
 
-    public function __construct(ExtractionManager $extractionManager, InjectionManager $injectionManager, SerializationVisitor $codec) {
-        $this->extractionManager = $extractionManager;
+    public function __construct(ExtractionProcess $extractionProcess, InjectionProcess $injectionProcess, SerializationVisitor $codec) {
+        $this->extractionProcess = $extractionProcess;
+        $this->injectionProcess = $injectionProcess;
         $this->codec = $codec;
-        $this->injectionManager = $injectionManager;
     }
 
     /**
+     * @param mixed $value
      * @throws CircularReferenceException
+     * @return string|false
      */
     public function marshall($value) {
-        $extracted = $this->extractionManager->extract($value);
+        $extracted = $this->extractionProcess->extract($value);
         return $this->codec->serialize($extracted);
     }
 
-    public function unmarshall($data, TypeToken $token) {
+    /**
+     * @param string $data
+     * @param TypeToken $token
+     * @return mixed
+     */
+    public function unmarshall(string $data, TypeToken $token) {
         $data = $this->codec->deserialize($data);
-        return $this->injectionManager->reconstruct($data, $token);
+        return $this->injectionProcess->reconstruct($data, $token);
     }
 }

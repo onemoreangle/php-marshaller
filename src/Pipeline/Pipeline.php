@@ -9,10 +9,13 @@ namespace OneMoreAngle\Marshaller\Pipeline;
  */
 class Pipeline implements Stage {
 
+    /**
+     * @var Stage[]
+     */
     private array $stages;
 
     /**
-     * @param array<Stage<?, ?>> $stages
+     * @param array<Stage<mixed, mixed>> $stages
      */
     public function __construct(array $stages) {
         $this->stages = $stages;
@@ -23,11 +26,13 @@ class Pipeline implements Stage {
      * @return Data<Out>
      */
     public function process(Data $input): Data {
-        /** @var Data<?> $current, we are only aware that $stages[0] has Data<In> as input, and that the last stages outputs Data<Out> */
+        /** @var Data<mixed> $current, we are only aware that $stages[0] has Data<In> as input, and that the last stages outputs Data<Out> */
         $current = $input;
         foreach($this->stages as $stage) {
             $current = $this->next($stage, $current);
         }
+
+        /** @var Data<Out> $current last one is always Out by construction */
         return $current;
     }
 

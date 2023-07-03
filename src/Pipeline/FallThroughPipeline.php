@@ -2,18 +2,19 @@
 
 namespace OneMoreAngle\Marshaller\Pipeline;
 
-use R;
-
 /**
  * @template R
  * @implements Supplier<R>
  */
 class FallThroughPipeline implements Supplier {
 
+    /**
+     * @var Supplier<R>[]
+     */
     private array $steps;
 
     /**
-     * @param array<Supplier<R>[]> $steps
+     * @param array<Supplier<R>> $steps
      */
     public function __construct(array $steps) {
         $this->steps = $steps;
@@ -26,7 +27,7 @@ class FallThroughPipeline implements Supplier {
         /** @var Data<R|null> $current */
         $current = null;
         foreach($this->steps as $step) {
-            $temp = $step->step();
+            $temp = $step->fetch();
             if ($temp->getValue() !== null) {
                 return $temp;
             }
