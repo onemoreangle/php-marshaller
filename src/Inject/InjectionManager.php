@@ -6,16 +6,19 @@ use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Inject\Handler\ArrayInjector;
 use OneMoreAngle\Marshaller\Inject\Handler\ObjectInjector;
 use OneMoreAngle\Marshaller\Inject\Handler\PrimitiveInjector;
+use OneMoreAngle\Marshaller\Meta\MetaExtractor;
 use OneMoreAngle\Marshaller\Meta\PropertyMetadataProvider;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 
 class InjectionManager implements TypeInjectorProvider, InjectionProcess {
+    protected MetaExtractor $metaExtractor;
     protected PropertyMetadataProvider $propertyMetadataProvider;
     private PrimitiveInjector $primitiveInjector;
     private ObjectInjector $objectInjector;
     private ArrayInjector $arrayInjector;
 
-    public function __construct(PropertyMetadataProvider $propertyMetadataProvider, PrimitiveInjector $primitiveInjector = null, ObjectInjector $objectInjector = null, ArrayInjector $arrayInjector = null) {
+    public function __construct(MetaExtractor $metaExtractor, PropertyMetadataProvider $propertyMetadataProvider, PrimitiveInjector $primitiveInjector = null, ObjectInjector $objectInjector = null, ArrayInjector $arrayInjector = null) {
+        $this->metaExtractor = $metaExtractor;
         $this->propertyMetadataProvider = $propertyMetadataProvider;
         $this->primitiveInjector = $primitiveInjector ?? new PrimitiveInjector();
         $this->objectInjector = $objectInjector ?? new ObjectInjector($this, $this->propertyMetadataProvider);
@@ -44,5 +47,9 @@ class InjectionManager implements TypeInjectorProvider, InjectionProcess {
 
     public function getPropertyMetadataProvider() : PropertyMetadataProvider {
         return $this->propertyMetadataProvider;
+    }
+
+    public function getMetaExtractor() : MetaExtractor {
+        return $this->metaExtractor;
     }
 }

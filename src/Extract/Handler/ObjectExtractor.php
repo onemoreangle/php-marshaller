@@ -2,6 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Extract\Handler;
 
+use OneMoreAngle\Marshaller\Data\ExtractionMetaData;
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Exception\UnresolvedPropertyMetaData;
@@ -45,6 +46,8 @@ class ObjectExtractor implements Extractor {
 
         $reflection = new ReflectionClass($data);
 
+        $annotations = $this->extractionManager->getMetaExtractor()->extractAllFromClass($reflection);
+
         $result = [];
         foreach ($reflection->getProperties() as $property) {
             if($this->extractionManager->getPropertyMetadataProvider()->isOmit($property) === true) {
@@ -63,9 +66,11 @@ class ObjectExtractor implements Extractor {
                 continue;
             }
 
-            $result[$name] = $this->extractionManager->extract($value);
+            $propertyIntermediateData = $this->extractionManager->extract($value);
+            $propertyIntermediateData->setMetadata(new ExtractionMetaData($this->extractionManager->getMetaExtractor()->extractAllFromProperty($property)));
+            $result[$name] = $propertyIntermediateData;
         }
 
-        return new IntermediaryData($result, $token);
+        return new IntermediaryData($result, $token, new ExtractionMetaData($annotations));
     }
 }

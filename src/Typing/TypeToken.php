@@ -11,12 +11,12 @@ use OneMoreAngle\Marshaller\Inject\TypeInjectorProvider;
 abstract class TypeToken {
 
     const NULL = "null";
-    const ARRAY = "array";
     const BOOL = "boolean";
     const INT = "integer";
     const FLOAT = "float";
     const STRING = "string";
     const OBJECT = "object";
+    const ARRAY = "array";
 
     /**
      * @var string[]

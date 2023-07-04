@@ -47,14 +47,18 @@ class SerializerBuilder {
      * @throws Exception
      */
     public function build(): Serializer {
-        $this->extractionProcess = $this->extractionProcess ?? new ExtractionManager($this->getPropertyMetadataProvider());
-        $this->injectionProcess = $this->injectionProcess ?? new InjectionManager($this->getPropertyMetadataProvider());
+        $this->extractionProcess = $this->extractionProcess ?? new ExtractionManager($this->getMetaExtractor(), $this->getPropertyMetadataProvider());
+        $this->injectionProcess = $this->injectionProcess ?? new InjectionManager($this->getMetaExtractor(), $this->getPropertyMetadataProvider());
 
         if($this->codec === null) {
             throw new Exception('A codec is required, none was provided in the builder');
         }
 
         return new Serializer($this->extractionProcess, $this->injectionProcess, $this->codec);
+    }
+
+    private function getMetaExtractor() : MetaExtractor {
+        return $this->metaExtractor ?? $this->getDefaultMetaExtractor();
     }
 
     private function getDefaultMetaExtractor(): MetaExtractor {
@@ -72,7 +76,7 @@ class SerializerBuilder {
      */
     private function getPropertyMetadataProvider(): PropertyMetadataProvider {
         if($this->propertyMetadataProvider === null) {
-            $metaExtractor = $this->metaExtractor ?? $this->getDefaultMetaExtractor();
+            $metaExtractor = $this->getMetaExtractor();
             $metaReader = new MetaExtractorBasedPropertyMetadataProvider($metaExtractor);
             $reflectionReader = new ReflectionPropertyMetadataProvider();
             $this->propertyMetadataProvider = new FallThroughPropertyMetaDataProvider([$metaReader, $reflectionReader]);

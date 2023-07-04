@@ -62,4 +62,16 @@ class DoctrineAnnotationMetaExtractor implements MetaExtractor {
     public function extractFromMethod(ReflectionMethod $method, string $annotation): ?object {
         return $this->reader->getMethodAnnotation($method, $annotation);
     }
+
+    public function extractAllFromClass(ReflectionClass $class): array {
+        return $this->reader->getClassAnnotations($class);
+    }
+
+    public function extractAllFromProperty(ReflectionProperty $property): array {
+        return $this->reader->getPropertyAnnotations($property);
+    }
+
+    public function extractAllFromMethod(ReflectionMethod $method): array {
+        return $this->reader->getMethodAnnotations($method);
+    }
 }

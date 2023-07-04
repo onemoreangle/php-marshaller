@@ -21,6 +21,12 @@ interface MetaExtractor {
     public function extractFromClass(ReflectionClass $class, string $annotation) : ?object;
 
     /**
+     * @param ReflectionClass $class
+     * @return array<string, object>
+     */
+    public function extractAllFromClass(ReflectionClass $class) : array;
+
+    /**
      * @template T of object
      * @param ReflectionProperty $property
      * @param class-string<T> $annotation
@@ -29,10 +35,22 @@ interface MetaExtractor {
     public function extractFromProperty(ReflectionProperty $property, string $annotation) : ?object;
 
     /**
+     * @param ReflectionProperty $property
+     * @return array<string, object>
+     */
+    public function extractAllFromProperty(ReflectionProperty $property) : array;
+
+    /**
      * @template T of object
      * @param ReflectionMethod $method
      * @param class-string<T> $annotation
      * @return T|null
      */
     public function extractFromMethod(ReflectionMethod $method, string $annotation) : ?object;
+
+    /**
+     * @param ReflectionMethod $method
+     * @return array<string, object>
+     */
+    public function extractAllFromMethod(ReflectionMethod $method) : array;
 }

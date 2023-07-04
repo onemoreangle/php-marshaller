@@ -1,6 +1,6 @@
 {
     "name": "onemoreangle/php-marshaller",
-    "description": "Efficiently serialize and deserialize PHP data structures with this adaptable library, supporting multiple formats and optional attribute or annotation-based property naming.",
+    "description": "A small library with few required dependencies to serialize and deserialize PHP structures using optional attribute or annotation-based configuration",
     "type": "library",
     "autoload": {
         "psr-4": {
@@ -21,15 +21,23 @@
     "license": "MIT",
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.4",
-        "ext-json": "*"
+        "php": ">=7.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6",
         "phpstan/phpstan-phpunit": "^1.3",
         "phpstan/extension-installer": "^1.3",
         "phpstan/phpstan": "^1.10",
-        "doctrine/annotations": "^2.0"
+        "doctrine/annotations": "^2.0",
+        "symfony/yaml": "^5.4",
+        "ext-json": "*",
+        "ext-simplexml": "*"
+    },
+    "suggest": {
+        "doctrine/annotations": "To use annotation-based configuration, especially useful PHP < 8.0, otherwise defaults to attribute-based configuration",
+        "symfony/yaml": "To use the YAML serialization format",
+        "ext-json": "To use the JSON serialization format",
+        "ext-simplexml": "To use the XML serialization format"
     },
     "config": {
         "allow-plugins": {
