@@ -47,10 +47,11 @@ Other serialization providers for different formats will be added in the future.
 
 ### Customizing serialization
 You can customize the serialization process by creating a `SerializerBuilder` and providing it with options. Often times you will want to use the default settings of the serialization provider and then customize them, which you can do as follows
+
 ```php
 use OneMoreAngle\Marshaller\Api\Json;
 ...
-$serializer = Json::getDefaultSerializerBuilder()->withPropertyMetadataProvider(...)->build();
+$serializer = Json::getDefaultSerializerBuilder()->withMetaExtractor(...)->build();
 $data = $serializer->marshal($object);
 ```
 

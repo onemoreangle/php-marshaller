@@ -34,13 +34,18 @@ class SerializerBuilder {
         return $this;
     }
 
-    public function withPropertyMetadataProvider(MetaExtractor $metaExtractor): SerializerBuilder {
+    public function withMetaExtractor(MetaExtractor $metaExtractor): SerializerBuilder {
         $this->metaExtractor = $metaExtractor;
         return $this;
     }
 
     public function withInjectorManager(InjectionProcess $injectionProcess): SerializerBuilder {
         $this->injectionProcess = $injectionProcess;
+        return $this;
+    }
+
+    public function withPropertyMetadataProvider(PropertyMetadataProvider $propertyMetadataProvider): SerializerBuilder {
+        $this->propertyMetadataProvider = $propertyMetadataProvider;
         return $this;
     }
 

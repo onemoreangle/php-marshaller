@@ -25,8 +25,12 @@ class TypeTokenFactory {
         return ClassTypeToken::create($class);
     }
 
-    public static function array() : ArrayTypeToken {
-        return ArrayTypeToken::create();
+    /**
+     * @param string|TypeToken|null $type
+     * @return ArrayTypeToken
+     */
+    public static function array($type = null) : ArrayTypeToken {
+        return ArrayTypeToken::create(is_string($type) ? self::fromNamedType($type) : $type);
     }
 
     public static function null() : PrimitiveTypeToken {

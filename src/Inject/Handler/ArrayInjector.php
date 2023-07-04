@@ -6,6 +6,7 @@ use Exception;
 use OneMoreAngle\Marshaller\Data\IntermediaryData;
 use OneMoreAngle\Marshaller\Inject\InjectionManager;
 use OneMoreAngle\Marshaller\Inject\Injector;
+use OneMoreAngle\Marshaller\Typing\ArrayTypeToken;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
 use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 
@@ -18,7 +19,7 @@ class ArrayInjector implements Injector {
 
     /**
      * @param IntermediaryData<IntermediaryData[]> $data
-     * @param TypeToken $token
+     * @param ArrayTypeToken $token
      * @return array<mixed>
      * @throws Exception
      */
@@ -30,7 +31,7 @@ class ArrayInjector implements Injector {
 
         $result = [];
         foreach ($data->getValue() as $key => $value) {
-            $typeToken = TypeTokenFactory::tokenize($value->getValue());
+            $typeToken = $token->getArrayType() ?? TypeTokenFactory::tokenize($value->getValue());
             // TODO: the type token cannot accurately be determined from the data as we are in an array which is not typed, use attributes from defining classes
             $deserialized = $this->deserializerFactory->reconstruct($value, $typeToken);
             $result[$key] = $deserialized;
