@@ -1,25 +1,24 @@
 # php-marshaller
 ![tests](https://github.com/onemoreangle/php-marshaller/actions/workflows/ci.yml/badge.svg)
 
+> **Warning**  
+> This project is in very early stages of development and should be considered experimental.
+
 This is a small library with few required dependencies to serialize and deserialize PHP data structures using optional annotation-based configuration.
 
-> **Warning**  
-> This project is in early stages of development and should be considered experimental.
-
-
 ## Current features
-- JSON serialization and deserialization
+- JSON and YAML serialization and deserialization
 - Optional attribute or annotation-based customization of (de)serialization
 - Recursive deduction of property types and optional annotation-based target types
 - Circular reference detection
 - Support for both PHP 8 attributes and Doctrine annotations (PHP 7.4+)
 
 ## Planned features 
-- Support for other serialization formats (XML, YAML, etc.)
+- Support for other serialization formats, XML in particular
+- More robust object instantiation capabilities
 - User defined custom (de)serialization logic
 - Performance optimizations
-- More robust object instantiation capabilities
-- Default to using getters and setters for data extraction and injection
+- Using getters and setters for data extraction and injection (as a default)
 
 ## Installation
 For general use, install the library with composer using:

@@ -9,6 +9,7 @@ use OneMoreAngle\Marshaller\Inject\InjectionManager;
 use OneMoreAngle\Marshaller\Inject\InjectionProcess;
 use OneMoreAngle\Marshaller\Meta\AttributeMetaExtractor;
 use OneMoreAngle\Marshaller\Meta\DoctrineAnnotationMetaExtractor;
+use OneMoreAngle\Marshaller\Meta\FallThroughMetaExtractor;
 use OneMoreAngle\Marshaller\Meta\FallThroughPropertyMetaDataProvider;
 use OneMoreAngle\Marshaller\Meta\MetaExtractor;
 use OneMoreAngle\Marshaller\Meta\MetaExtractorBasedPropertyMetadataProvider;
@@ -62,13 +63,23 @@ class SerializerBuilder {
     }
 
     private function getDefaultMetaExtractor(): MetaExtractor {
+        $fallThroughExtractor = new FallThroughMetaExtractor();
+
+        // PHP 8.0.0 or higher takes precedence
         if (version_compare(PHP_VERSION, '8.0.0', '>=')) {
-            return new AttributeMetaExtractor();
-        } else if(class_exists('\Doctrine\Common\Annotations\AnnotationReader')) {
-            return new DoctrineAnnotationMetaExtractor();
-        } else {
-            throw new Exception('No metadata extractor available. If you are using a PHP version in between 7.4 and 8.0, please install doctrine/annotations');
+            $fallThroughExtractor->addExtractor(new AttributeMetaExtractor());
         }
+
+        // If we are on PHP 7.4 or higher and doctrine annotations are available, we use it as a fallback
+        if(class_exists('\Doctrine\Common\Annotations\AnnotationReader')) {
+            $fallThroughExtractor->addExtractor(new DoctrineAnnotationMetaExtractor());
+        }
+
+        if(!count($fallThroughExtractor->getExtractors())) {
+            throw new Exception('No metadata extractors available. If you are using a PHP version in between 7.4 and 8.0, please install doctrine/annotations');
+        }
+
+        return $fallThroughExtractor;
     }
 
     /**

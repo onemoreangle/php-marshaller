@@ -2,12 +2,14 @@
 
 namespace OneMoreAngle\Marshaller\Attribute;
 
+use Attribute;
+
 /**
  * @Annotation
  * @NamedArgumentConstructor
  * @Target("PROPERTY")
  */
-#[\Attribute(\Attribute::TARGET_PROPERTY)]
+#[Attribute(Attribute::TARGET_PROPERTY)]
 class TargetClass {
     public string $class;
 

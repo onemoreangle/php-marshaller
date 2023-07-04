@@ -2,6 +2,7 @@
 
 namespace OneMoreAngle\Marshaller\Meta;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Exception;
 use ReflectionClass;
 use ReflectionMethod;
@@ -10,7 +11,7 @@ use ReflectionProperty;
 class DoctrineAnnotationMetaExtractor implements MetaExtractor {
 
     /**
-     * @var \Doctrine\Common\Annotations\AnnotationReader $reader
+     * @var AnnotationReader $reader
      */
     private $reader;
 
@@ -19,15 +20,15 @@ class DoctrineAnnotationMetaExtractor implements MetaExtractor {
      * @throws Exception
      */
     public function __construct(object $reader = null) {
-        if (!class_exists('\Doctrine\Common\Annotations\AnnotationReader')) {
-            throw new Exception('Doctrine\Common\Annotations\AnnotationReader is required to use DoctrineAnnotationMetaExtractor, switch MetaExtractor implementation or run: composer require doctrine/annotations');
+        if (!class_exists(AnnotationReader::class)) {
+            throw new Exception(AnnotationReader::class . ' is required to use DoctrineAnnotationMetaExtractor, switch MetaExtractor implementation or run: composer require doctrine/annotations');
         }
 
-        if($reader !== null && !is_a($reader, '\Doctrine\Common\Annotations\AnnotationReader')) {
-            throw new Exception('DoctrineAnnotationMetaExtractor requires an instance of Doctrine\Common\Annotations\AnnotationReader');
+        if($reader !== null && !is_a($reader, AnnotationReader::class)) {
+            throw new Exception('DoctrineAnnotationMetaExtractor requires an instance of ' . AnnotationReader::class . ' or null');
         }
 
-        $this->reader = $reader ?? new \Doctrine\Common\Annotations\AnnotationReader();
+        $this->reader = $reader ?? new AnnotationReader();
     }
 
     /**

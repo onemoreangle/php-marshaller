@@ -10,7 +10,9 @@ use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 
 abstract class CachedSerializerProvider implements SerializationProvider {
 
-    /** @var Serializer[] */
+    /**
+     * @var array<class-string<static>, Serializer> $cache
+     */
     private static array $cache;
 
     /**
