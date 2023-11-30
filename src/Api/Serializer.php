@@ -2,11 +2,13 @@
 
 namespace OneMoreAngle\Marshaller\Api;
 
+use Exception;
 use OneMoreAngle\Marshaller\Exception\CircularReferenceException;
 use OneMoreAngle\Marshaller\Extract\ExtractionProcess;
 use OneMoreAngle\Marshaller\Inject\InjectionProcess;
 use OneMoreAngle\Marshaller\Serialization\SerializationVisitor;
 use OneMoreAngle\Marshaller\Typing\TypeToken;
+use OneMoreAngle\Marshaller\Typing\TypeTokenFactory;
 
 class Serializer {
     private ExtractionProcess $extractionProcess;
@@ -30,11 +32,19 @@ class Serializer {
     }
 
     /**
+     * @template T
      * @param string $data
-     * @param TypeToken $token
-     * @return mixed
+     * @param TypeToken|class-string<T> $token
+     * @return mixed|T
+     * @throws Exception
      */
-    public function unmarshal(string $data, TypeToken $token) {
+    public function unmarshal(string $data, $token) {
+        if(is_string($token)) {
+            $token = TypeTokenFactory::object($token);
+        } else if(!is_a($token, TypeToken::class)) {
+            throw new Exception("Invalid token type, expected class string or TypeToken");
+        }
+
         $data = $this->codec->deserialize($data);
         return $this->injectionProcess->reconstruct($data, $token);
     }

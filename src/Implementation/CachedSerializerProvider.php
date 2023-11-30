@@ -38,18 +38,12 @@ abstract class CachedSerializerProvider implements SerializationProvider {
 
     /**
      * @template T
-     * @param $data
+     * @param string $data
      * @param TypeToken|class-string<T> $token
      * @return mixed|T
      * @throws Exception
      */
     public static function unmarshal($data, $token) {
-        if(is_string($token)) {
-            $token = TypeTokenFactory::object($token);
-        } else if(!is_a($token, TypeToken::class)) {
-            throw new Exception("Invalid token type, expected class string or TypeToken");
-        }
-
         return static::getSerializer()->unmarshal($data, $token);
     }
 }
