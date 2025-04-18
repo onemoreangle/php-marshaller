@@ -19,7 +19,7 @@ class IntermediaryData {
      * @param TypeToken $token
      * @param ExtractionMetaData|null $metadata
      */
-    public final function __construct($value, TypeToken $token, ExtractionMetaData $metadata = null) {
+    public final function __construct($value, TypeToken $token, ?ExtractionMetaData $metadata = null) {
         $this->value = $value;
         $this->type = $token;
         $this->metadata = $metadata;

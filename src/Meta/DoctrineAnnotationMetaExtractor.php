@@ -13,13 +13,13 @@ class DoctrineAnnotationMetaExtractor implements MetaExtractor {
     /**
      * @var AnnotationReader $reader
      */
-    private $reader;
+    private AnnotationReader $reader;
 
     /**
      * @param object|null $reader
      * @throws Exception
      */
-    public function __construct(object $reader = null) {
+    public function __construct(?object $reader = null) {
         if (!class_exists(AnnotationReader::class)) {
             throw new Exception(AnnotationReader::class . ' is required to use DoctrineAnnotationMetaExtractor, switch MetaExtractor implementation or run: composer require doctrine/annotations');
         }

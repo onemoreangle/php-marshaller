@@ -18,7 +18,7 @@ class ExtractionManager implements TypeExtractorProvider, ExtractionProcess {
     private ObjectExtractor $objectExtractor;
     private ArrayExtractor $arrayExtractor;
 
-    public function __construct(MetaExtractor $metaExtractor, PropertyMetadataProvider $propertyMetadataProvider, PrimitiveExtractor $primitiveExtractor = null, ObjectExtractor $objectExtractor = null, ArrayExtractor $arrayExtractor = null) {
+    public function __construct(MetaExtractor $metaExtractor, PropertyMetadataProvider $propertyMetadataProvider, ?PrimitiveExtractor $primitiveExtractor = null, ?ObjectExtractor $objectExtractor = null, ?ArrayExtractor $arrayExtractor = null) {
         $this->metaExtractor = $metaExtractor;
         $this->propertyMetadataProvider = $propertyMetadataProvider;
         $this->primitiveExtractor = $primitiveExtractor ?? new PrimitiveExtractor();

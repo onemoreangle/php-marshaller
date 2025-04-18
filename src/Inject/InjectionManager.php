@@ -17,7 +17,7 @@ class InjectionManager implements TypeInjectorProvider, InjectionProcess {
     private ObjectInjector $objectInjector;
     private ArrayInjector $arrayInjector;
 
-    public function __construct(MetaExtractor $metaExtractor, PropertyMetadataProvider $propertyMetadataProvider, PrimitiveInjector $primitiveInjector = null, ObjectInjector $objectInjector = null, ArrayInjector $arrayInjector = null) {
+    public function __construct(MetaExtractor $metaExtractor, PropertyMetadataProvider $propertyMetadataProvider, ?PrimitiveInjector $primitiveInjector = null, ?ObjectInjector $objectInjector = null, ?ArrayInjector $arrayInjector = null) {
         $this->metaExtractor = $metaExtractor;
         $this->propertyMetadataProvider = $propertyMetadataProvider;
         $this->primitiveInjector = $primitiveInjector ?? new PrimitiveInjector();

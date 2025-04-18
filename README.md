@@ -106,7 +106,7 @@ CustomClass Object
 
 
 ## Requirements
-- PHP >= 7.4 (to use attributes PHP 8.0 or higher is required, otherwise you can install doctrine/annotations and use annotations instead) 
+- PHP >= 8.2 (you can use either attributes (recommended) or install doctrine/annotations and use annotations instead) 
 
 ## Contributing
 Contributions are more than welcome! Please feel free to submit a pull request
