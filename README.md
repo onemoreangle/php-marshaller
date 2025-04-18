@@ -11,7 +11,7 @@ This is a small library with few required dependencies to serialize and deserial
 - Optional attribute or annotation-based customization of (de)serialization
 - Recursive deduction of property types and optional annotation-based target types
 - Circular reference detection
-- Support for both PHP 8 attributes and Doctrine annotations (PHP 7.4+)
+- Support for both PHP 8 attributes and Doctrine annotations
 
 ## Planned features 
 - Support for other serialization formats, XML in particular
